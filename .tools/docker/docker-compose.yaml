@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+
+  postgres-fa_auth:
+    container_name: postgres-fa_auth
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=uNx%4R1U*00Z
+      - POSTGRES_USER=fa_auth
+      - POSTGRES_DB=fa_auth
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    restart: unless-stopped
+    ports: [ "5432:5432" ]
+
+  postgres-fa_user:
+    container_name: postgres-fa_user
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=uNx%4R1U*00Z
+      - POSTGRES_USER=fa_user
+      - POSTGRES_DB=fa_user
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    restart: unless-stopped
+    ports: [ "5433:5432" ]
+

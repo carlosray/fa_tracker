@@ -1,0 +1,32 @@
+db:
+  host: localhost
+  port: 5432
+  name: fa_auth
+  username: fa_auth
+  password: uNx%4R1U*00Z
+
+logging:
+  level:
+    ml.ipvz.fa.exchange.logging: DEBUG
+    io.r2dbc.postgresql.QUERY: DEBUG # for queries
+    io.r2dbc.postgresql.PARAM: DEBUG # for parameters
+    reactor.ipc.netty.channel.ChannelOperationsHandler: DEBUG
+    reactor.ipc.netty.http.server.HttpServer: DEBUG
+    reactor.ipc.netty.http.client: DEBUG
+    io.reactivex.netty.protocol.http.client: DEBUG
+    io.netty.handler: DEBUG
+    io.netty.handler.proxy.HttpProxyHandler: DEBUG
+    io.netty.handler.proxy.ProxyHandler: DEBUG
+    org.springframework.web.reactive.function.client: DEBUG
+    reactor.ipc.netty.channel: DEBUG
+
+token:
+  access:
+    secret: "26042bww9u59bm5anbxwiv3ozjn8lp"
+    valid-duration: PT10M
+    refresh-duration: PT30M
+    refresh-length: 50
+
+client:
+  user-service:
+    uri: http://localhost:8787

@@ -1,0 +1,58 @@
+###
+POST http://localhost:8008/auth/login
+Content-Type: application/json
+
+{
+  "login": "test-login",
+  "password": "test-pwd"
+}
+
+###
+POST http://localhost:8181/api/auth/login
+Content-Type: application/json
+
+{
+  "login": "test-login",
+  "password": "test-pwd"
+}
+
+###
+GET http://localhost:8181/api/users
+Authorization: Bearer {{accessToken}}
+
+###
+GET http://localhost:8181/api/auth/login
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+###
+PUT http://localhost:8008/auth/refresh
+Content-Type: application/json
+
+{
+  "accessToken": {{accessToken}},
+  "refreshToken": {{refreshToken}}
+}
+
+
+###
+POST http://localhost:8787/users/login
+Content-Type: application/json
+
+{
+  "login": "test-login",
+  "password": "test-pwd"
+}
+
+###
+POST http://localhost:8787/users
+Content-Type: application/json
+
+{
+  "login": "test-login",
+  "email": "test.email@tt.org",
+  "password": "test-pwd",
+  "firstName": "test-fn",
+  "lastName": "test-ln"
+}
+

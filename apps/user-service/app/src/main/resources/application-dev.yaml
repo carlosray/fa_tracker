@@ -1,0 +1,15 @@
+db:
+  host: localhost
+  port: 5433
+  name: fa_user
+  username: fa_user
+  password: uNx%4R1U*00Z
+
+pwd:
+  encoder:
+    strength: 10
+
+logging:
+  level:
+    io.r2dbc.postgresql.QUERY: DEBUG # for queries
+    io.r2dbc.postgresql.PARAM: DEBUG # for parameters

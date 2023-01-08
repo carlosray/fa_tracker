@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: auth-service
+  profiles:
+    active: dev
+  liquibase:
+    enabled: true
+    change-log: db/migrations/changelog-master.xml
+    url: jdbc:postgresql://${db.host}:${db.port}/${db.name}
+    user: ${db.username}
+    password: ${db.password}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    database: postgresql
+  r2dbc:
+    username: ${db.username}
+    password: ${db.password}
+    url: r2dbc:postgresql://${db.host}:${db.port}/${db.name}
+    pool:
+      enabled: true
+      initial-size: 10
+      max-idle-time: 1m
+      max-size: 30
+  data:
+    r2dbc:
+      repositories:
+        enabled: true
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+server:
+  port: 8008
+
+client:
+  user-service:
+    uri: http://localhost
