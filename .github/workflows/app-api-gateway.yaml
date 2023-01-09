@@ -1,4 +1,4 @@
-name: Build Api Gateway
+name: Build App - Api Gateway
 
 on:
   push:
