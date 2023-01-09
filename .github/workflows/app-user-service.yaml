@@ -1,6 +1,7 @@
 name: Build App - User Service
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'master'
