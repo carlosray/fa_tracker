@@ -13,7 +13,7 @@
     <artifactId>auth-service</artifactId>
     <packaging>pom</packaging>
 
-    <name>Example :: Apps :: Auth Service</name>
+    <name>Tracker :: Apps :: Auth Service</name>
 
     <modules>
         <module>app</module>

@@ -9,7 +9,7 @@
 
     <artifactId>auth-service-client</artifactId>
 
-    <name>Example :: Apps :: Auth Service :: Client</name>
+    <name>Tracker :: Apps :: Auth Service :: Client</name>
 
     <dependencies>
         <dependency>

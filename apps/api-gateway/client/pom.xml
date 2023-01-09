@@ -9,6 +9,6 @@
 
     <artifactId>api-gateway-client</artifactId>
 
-    <name>Example :: Apps :: Api Gateway :: Client</name>
+    <name>Tracker :: Apps :: Api Gateway :: Client</name>
 
 </project>

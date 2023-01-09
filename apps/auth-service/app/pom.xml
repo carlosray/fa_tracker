@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>auth-service-app</artifactId>
-    <name>Example :: Apps :: Auth Service :: App</name>
+    <name>Tracker :: Apps :: Auth Service :: App</name>
 
     <dependencies>
         <dependency>
@@ -113,4 +113,13 @@
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

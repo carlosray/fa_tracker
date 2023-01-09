@@ -12,7 +12,7 @@
 
     <artifactId>user-service-app</artifactId>
 
-    <name>Example :: Apps :: User Service :: App</name>
+    <name>Tracker :: Apps :: User Service :: App</name>
 
     <dependencies>
         <dependency>
