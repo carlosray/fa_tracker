@@ -12,7 +12,9 @@
 
     <artifactId>user-service</artifactId>
     <packaging>pom</packaging>
+
     <name>Tracker :: Apps :: User Service</name>
+
     <modules>
         <module>app</module>
         <module>client</module>
