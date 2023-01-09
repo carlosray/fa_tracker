@@ -1,6 +1,7 @@
 name: Build App - Auth Service
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - 'master'
