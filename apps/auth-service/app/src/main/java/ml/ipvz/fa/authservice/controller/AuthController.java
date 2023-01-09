@@ -2,11 +2,11 @@ package ml.ipvz.fa.authservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import ml.ipvz.fa.authservice.model.dto.LoginDto;
 import ml.ipvz.fa.authservice.model.token.AccessRefreshToken;
 import ml.ipvz.fa.authservice.model.token.AccessToken;
 import ml.ipvz.fa.authservice.service.AuthenticationService;
 import ml.ipvz.fa.authservice.util.TokenUtils;
+import ml.ipvz.fa.userservice.model.LoginDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

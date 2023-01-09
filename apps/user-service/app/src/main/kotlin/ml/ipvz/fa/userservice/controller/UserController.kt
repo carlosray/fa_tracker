@@ -1,9 +1,9 @@
 package ml.ipvz.fa.userservice.controller
 
 import jakarta.validation.Valid
-import ml.ipvz.fa.userservice.model.dto.AuthDto
-import ml.ipvz.fa.userservice.model.dto.RegisterDto
-import ml.ipvz.fa.userservice.model.dto.UserDto
+import ml.ipvz.fa.userservice.model.LoginDto
+import ml.ipvz.fa.userservice.model.RegisterDto
+import ml.ipvz.fa.userservice.model.UserDto
 import ml.ipvz.fa.userservice.service.UserService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono
 class UserController(val userService: UserService) {
 
     @PostMapping("login")
-    fun login(@RequestBody @Valid authDto: AuthDto): Mono<UserDto> =
+    fun login(@RequestBody @Valid authDto: LoginDto): Mono<UserDto> =
         userService.login(authDto).map { it.toDto() }
 
     @PostMapping

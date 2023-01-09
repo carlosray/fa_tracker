@@ -1,9 +1,9 @@
 package ml.ipvz.fa.authservice.service;
 
-import ml.ipvz.fa.authservice.model.dto.LoginDto;
 import ml.ipvz.fa.authservice.model.token.AccessRefreshToken;
 import ml.ipvz.fa.authservice.model.token.AccessToken;
 import ml.ipvz.fa.authservice.model.token.Token;
+import ml.ipvz.fa.userservice.model.LoginDto;
 import reactor.core.publisher.Mono;
 
 public interface AuthenticationService {

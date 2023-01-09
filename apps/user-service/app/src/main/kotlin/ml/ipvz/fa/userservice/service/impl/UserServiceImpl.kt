@@ -2,8 +2,8 @@ package ml.ipvz.fa.userservice.service.impl
 
 import ml.ipvz.fa.userservice.exception.IncorrectPasswordException
 import ml.ipvz.fa.userservice.exception.UserNotFoundException
-import ml.ipvz.fa.userservice.model.dto.AuthDto
-import ml.ipvz.fa.userservice.model.dto.RegisterDto
+import ml.ipvz.fa.userservice.model.LoginDto
+import ml.ipvz.fa.userservice.model.RegisterDto
 import ml.ipvz.fa.userservice.model.entity.UserEntity
 import ml.ipvz.fa.userservice.repository.UserRepository
 import ml.ipvz.fa.userservice.service.PasswordService
@@ -19,7 +19,7 @@ class UserServiceImpl(
     private val userRepository: UserRepository,
     private val passwordService: PasswordService
 ) : UserService {
-    override fun login(auth: AuthDto): Mono<UserEntity> =
+    override fun login(auth: LoginDto): Mono<UserEntity> =
         findUser(auth.login)
             .switchIfEmpty { Mono.error(UserNotFoundException(auth.login)) }
             .filter { passwordService.matches(auth.password, it.password) }

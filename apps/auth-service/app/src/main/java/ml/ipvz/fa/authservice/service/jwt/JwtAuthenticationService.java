@@ -11,23 +11,23 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import ml.ipvz.fa.authservice.client.UserServiceClient;
 import ml.ipvz.fa.authservice.exception.AccessTokenExpiredException;
 import ml.ipvz.fa.authservice.exception.RefreshTokenExpiredException;
 import ml.ipvz.fa.authservice.exception.RefreshTokenInvalidException;
 import ml.ipvz.fa.authservice.exception.RefreshTokenNotFoundException;
+import ml.ipvz.fa.authservice.model.CustomClaims;
 import ml.ipvz.fa.authservice.model.config.TokenConfig;
-import ml.ipvz.fa.authservice.model.dto.LoginDto;
-import ml.ipvz.fa.authservice.model.dto.UserDto;
 import ml.ipvz.fa.authservice.model.entity.ClientEntity;
 import ml.ipvz.fa.authservice.model.token.AccessRefreshToken;
 import ml.ipvz.fa.authservice.model.token.AccessToken;
-import ml.ipvz.fa.authservice.model.token.CustomClaims;
 import ml.ipvz.fa.authservice.model.token.Token;
 import ml.ipvz.fa.authservice.repository.AuthClientRepository;
 import ml.ipvz.fa.authservice.service.AuthenticationService;
 import ml.ipvz.fa.authservice.service.RefreshTokenService;
 import ml.ipvz.fa.authservice.service.TokenService;
+import ml.ipvz.fa.userservice.client.UserServiceClient;
+import ml.ipvz.fa.userservice.model.LoginDto;
+import ml.ipvz.fa.userservice.model.UserDto;
 import org.bouncycastle.util.encoders.Base64;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,7 +56,7 @@ public class JwtAuthenticationService implements AuthenticationService {
     private Mono<AccessRefreshToken> generateTokenPair(UserDto user) {
         return generateAccessToken(user)
                 .zipWith(refreshTokenService.generate(config.getRefreshLength()))
-                .zipWhen(t -> saveClient(user.id().toString(), t.getT2(), clock.instant()))
+                .zipWhen(t -> saveClient(String.valueOf(user.getId()), t.getT2(), clock.instant()))
                 .doOnNext(t -> log.info("Generated token pair for user {}", t.getT2().id()))
                 .map(t -> new AccessRefreshToken(t.getT1().getT1(), t.getT1().getT2()));
     }
@@ -65,8 +65,8 @@ public class JwtAuthenticationService implements AuthenticationService {
     private Mono<String> generateAccessToken(UserDto user) {
         Map<String, Object> claims = Map.of(
                 CustomClaims.USER, mapper.writeValueAsBytes(user),
-                Claims.ID, user.id(),
-                Claims.SUBJECT, user.login()
+                Claims.ID, user.getId(),
+                Claims.SUBJECT, user.getLogin()
         );
         return tokenService.generate(claims);
     }
@@ -82,7 +82,7 @@ public class JwtAuthenticationService implements AuthenticationService {
         return accessRefreshToken.flatMap(a ->
                 parseClaims(a.accessToken())
                         .flatMap(r -> getUserFromClaims(r.claims()))
-                        .zipWhen(u -> findClient(u.id().toString()))
+                        .zipWhen(u -> findClient(String.valueOf(u.getId())))
                         .doOnNext(t -> validateRefreshToken(a.refreshToken(), t.getT2()))
                         .flatMap(t -> generateTokenPair(t.getT1())));
     }
@@ -107,8 +107,8 @@ public class JwtAuthenticationService implements AuthenticationService {
     private Mono<ParseTokenResult> parseClaims(String token) {
         return tokenService.parse(token)
                 .map(claims -> new ParseTokenResult(claims, Optional.empty()))
-                .onErrorResume(ExpiredJwtException.class, (e) -> Mono.just(new ParseTokenResult(e.getClaims(), Optional.of(e))));
-
+                .onErrorResume(ExpiredJwtException.class, (e) -> Mono.just(new ParseTokenResult(e.getClaims(),
+                        Optional.of(e))));
     }
 
     @Override

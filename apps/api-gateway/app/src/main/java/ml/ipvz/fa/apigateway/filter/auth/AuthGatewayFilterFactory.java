@@ -3,7 +3,7 @@ package ml.ipvz.fa.apigateway.filter.auth;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
-import ml.ipvz.fa.apigateway.client.AuthServiceClient;
+import ml.ipvz.fa.authservice.client.AuthServiceClient;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
