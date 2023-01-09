@@ -1,0 +1,41 @@
+name: Build Auth Service
+
+on:
+  push:
+    branches:
+      - 'master'
+      - 'dev/*'
+    paths:
+      - 'apps/auth-service/**'
+
+env:
+  IMAGE: docker.pkg.github.com/${{ github.repository }}/auth-service:${{ github.sha }}
+
+jobs:
+  build-jar-docker:
+    name: build-jar-docker
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/heads/dev')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.3.0
+      - name: Cache Depdendencies
+        uses: actions/cache@v3.2.2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven-
+      - name: JDK
+        uses: actions/setup-java@v3.9.0
+        with:
+          java-version: 17
+          distribution: adopt
+      - name: Build
+        run: mvn clean package --projects :auth-service-app --also-make --threads=2 --batch-mode
+      - name: Build and publish Docker image
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          docker build --tag ${IMAGE} --build-arg JAR_PATH=JAR_DIR=apps/auth-service/app/target .
+          docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
+          docker push ${IMAGE}
