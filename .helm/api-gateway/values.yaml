@@ -28,6 +28,10 @@ yc:
   authorizedKey: <FILL>
   certId: <FILL>
 
+env:
+  - name: SPRING_PROFILES_ACTIVE
+    value: "prod"
+
 config:
   mountPath: /etc/config
   value:
