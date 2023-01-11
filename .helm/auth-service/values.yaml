@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: ghcr.io/carlosray/fa_tracker/api-gateway
+  repository: docker pull ghcr.io/carlosray/fa_tracker/auth-service
   pullPolicy: IfNotPresent
 imagePullSecrets: [ ]
 
@@ -13,21 +13,6 @@ service:
   type: ClusterIP
   port: 80
 
-ingress:
-  enabled: true
-  hosts:
-    - host: fa.ipvz.ml
-      paths:
-        - path: /api
-          pathType: Prefix
-  tls:
-    - hosts:
-      - fa.ipvz.ml
-
-yc:
-  authorizedKey: <FILL>
-  certId: <FILL>
-
 env:
   - name: SPRING_PROFILES_ACTIVE
     value: "prod"
@@ -37,28 +22,27 @@ config:
   value:
     server:
       port: 8080
-    spring:
-      cloud:
-        gateway:
-          globalcors:
-            cors-configurations:
-              '[/**]':
-                allowedOrigins: "https://fa.ipvz.ml"
-                allowedHeaders: "*"
-                allowedMethods:
-                  - GET
-                  - POST
-                  - PUT
-                  - DELETE
-    client:
-      user-service:
-        uri: http://user-service:80
-      auth-service:
-        uri: http://auth-service:80
+    db:
+      host: common-postgres.postgres
+      port: 5432
+      name: fa_auth_db
+      username: fa_user
+      password: <FILL>
 
     logging:
       level:
         ml.ipvz.fa.exchange.logging: DEBUG
+
+    token:
+      access:
+        secret: <FILL>
+        valid-duration: PT10M
+        refresh-duration: PT30M
+        refresh-length: 50
+
+    client:
+      user-service:
+        uri: http://user-service:80
 
 
 secret:
