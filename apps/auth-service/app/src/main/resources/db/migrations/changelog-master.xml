@@ -14,5 +14,4 @@
     <include file="/db/migrations/2022/12/30.sql"/>
 
 
-
 </databaseChangeLog>

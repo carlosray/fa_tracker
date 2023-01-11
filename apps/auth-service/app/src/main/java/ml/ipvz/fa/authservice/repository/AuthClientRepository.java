@@ -15,7 +15,7 @@ public interface AuthClientRepository extends R2dbcRepository<ClientEntity, Stri
     @Modifying
     @Query("INSERT INTO client(id, refresh_token, updated) VALUES (:id, :refreshToken, :updated)")
     Mono<Void> insert(@Param("id") String id,
-                              @Param("refreshToken") String refreshToken,
-                              @Param("updated") Instant updated);
+                      @Param("refreshToken") String refreshToken,
+                      @Param("updated") Instant updated);
 
 }
