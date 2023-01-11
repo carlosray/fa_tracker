@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: docker pull ghcr.io/carlosray/fa_tracker/user-service
+  repository: ghcr.io/carlosray/fa_tracker/user-service
   pullPolicy: IfNotPresent
 imagePullSecrets: [ ]
 
