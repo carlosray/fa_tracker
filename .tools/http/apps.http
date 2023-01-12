@@ -26,7 +26,7 @@ Authorization: Bearer {{accessToken}}
 Content-Type: application/json
 
 ###
-PUT {{authServiceUrl}}/auth/refresh
+PUT {{apiUrl}}/api/auth/refresh
 Content-Type: application/json
 
 {
@@ -36,7 +36,7 @@ Content-Type: application/json
 
 
 ###
-POST {{userServiceUrl}}/users/login
+POST {{apiUrl}}/users/login
 Content-Type: application/json
 
 {

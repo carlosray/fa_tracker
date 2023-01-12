@@ -1,5 +1,8 @@
 package ml.ipvz.fa.userservice.config
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import ml.ipvz.fa.userservice.client.UserServiceClient
 import ml.ipvz.fa.userservice.client.impl.UserServiceClientImpl
 import org.springframework.beans.factory.annotation.Qualifier
@@ -15,12 +18,13 @@ import org.springframework.web.reactive.function.client.WebClient
 class UserClientConfiguration {
 
     @Bean("userServiceWebClient")
-    fun userServiceWebClient(@Value("\${client.user-service.uri}") uri: String): WebClient {
+    fun userServiceWebClient(@Value("\${client.user-service.uri}") uri: String, mapper: ObjectMapper): WebClient {
+        val mapperWithModule = mapper.registerKotlinModule()
         return WebClient.builder()
             .baseUrl(uri)
             .codecs { clientCodecConfigurer: ClientCodecConfigurer ->
-                clientCodecConfigurer.customCodecs().register(Jackson2JsonDecoder())
-                clientCodecConfigurer.customCodecs().register(Jackson2JsonEncoder())
+                clientCodecConfigurer.customCodecs().register(Jackson2JsonDecoder(mapperWithModule))
+                clientCodecConfigurer.customCodecs().register(Jackson2JsonEncoder(mapperWithModule))
             }
             .build()
     }
