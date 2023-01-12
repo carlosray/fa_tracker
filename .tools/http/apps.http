@@ -8,24 +8,6 @@ Content-Type: application/json
 }
 
 ###
-POST {{apiUrl}}/api/auth/login
-Content-Type: application/json
-
-{
-  "login": "test-login",
-  "password": "test-pwd"
-}
-
-###
-GET {{apiUrl}}/api/users
-Authorization: Bearer {{accessToken}}
-
-###
-GET {{apiUrl}}/api/auth/login
-Authorization: Bearer {{accessToken}}
-Content-Type: application/json
-
-###
 PUT {{apiUrl}}/api/auth/refresh
 Content-Type: application/json
 
@@ -34,23 +16,17 @@ Content-Type: application/json
   "refreshToken": {{refreshToken}}
 }
 
+###
+GET {{apiUrl}}/api/users
+Authorization: Bearer {{accessToken}}
 
 ###
-POST {{apiUrl}}/users/login
+POST {{apiUrl}}/api/auth/register
 Content-Type: application/json
 
 {
-  "login": "test-login",
-  "password": "test-pwd"
-}
-
-###
-POST {{userServiceUrl}}/users
-Content-Type: application/json
-
-{
-  "login": "test-login",
-  "email": "test.email@tt.org",
+  "login": "test-login-1",
+  "email": "test.email-1@tt.org",
   "password": "test-pwd",
   "firstName": "test-fn",
   "lastName": "test-ln"

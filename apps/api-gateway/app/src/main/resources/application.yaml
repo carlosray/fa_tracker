@@ -23,7 +23,7 @@ spring:
           uri: ${client.auth-service.uri}
           predicates:
             - Path=/api/auth/refresh
-            - Method=POST
+            - Method=PUT
           filters:
             - SetPath=/auth/refresh
 
