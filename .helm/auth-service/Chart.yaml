@@ -3,4 +3,4 @@ name: auth-service
 description: A Helm chart for Tracker Auth Service
 type: application
 version: 1.0.0
-appVersion: "7603851f0b6e40a533cf788821b46f9af8babdee"
+appVersion: "8775753de9f8a5fa5a9e3936909e97df535f8d81"
