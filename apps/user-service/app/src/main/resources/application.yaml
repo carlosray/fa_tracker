@@ -22,6 +22,9 @@ spring:
       initial-size: 10
       max-idle-time: 1m
       max-size: 30
+    properties:
+      ssl: true
+      sslMode: require
   data:
     r2dbc:
       repositories:
