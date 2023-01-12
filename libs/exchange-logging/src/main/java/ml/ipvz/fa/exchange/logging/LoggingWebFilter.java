@@ -13,7 +13,7 @@ public class LoggingWebFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         ServerWebExchange exchangeToProceedWith = exchange;
-        if (log.isDebugEnabled()) {
+        if (log.isDebugEnabled() && !exchange.getRequest().getURI().getPath().contains("health")) {
             exchangeToProceedWith = new LoggingWebExchange(log, exchange);
         }
         return chain.filter(exchangeToProceedWith);

@@ -33,6 +33,10 @@ config:
       encoder:
         strength: 10
 
+    logging:
+      level:
+        ml.ipvz.fa.exchange.logging: DEBUG
+
 secret:
   mountPath: /etc/secret
   value:

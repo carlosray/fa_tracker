@@ -7,10 +7,10 @@ spring:
             allowedOrigins: "http://localhost:3000"
             allowedHeaders: "*"
             allowedMethods:
-                - GET
-                - POST
-                - PUT
-                - DELETE
+              - GET
+              - POST
+              - PUT
+              - DELETE
 client:
   user-service:
     uri: http://localhost:8787

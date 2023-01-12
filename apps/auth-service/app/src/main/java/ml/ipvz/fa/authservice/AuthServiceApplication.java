@@ -10,6 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
+import reactor.core.publisher.Hooks;
 
 @SpringBootApplication
 @ComponentScan(excludeFilters = {
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Import;
 public class AuthServiceApplication {
 
     public static void main(String[] args) {
+        Hooks.onOperatorDebug(); //TODO remove after debug
         SpringApplication.run(AuthServiceApplication.class, args);
     }
 
