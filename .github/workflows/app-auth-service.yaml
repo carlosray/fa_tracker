@@ -1,4 +1,4 @@
-name: Build App - Auth Service
+name: Auth Service CI
 
 on:
   workflow_dispatch:
