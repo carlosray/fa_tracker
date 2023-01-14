@@ -6,13 +6,11 @@ spring:
           '[/**]':
             allowedOrigins: "http://localhost:3000"
             allowedHeaders: "*"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
+            allowedMethods: "*"
+            maxAge: 3600
 client:
   user-service:
     uri: http://localhost:8787
   auth-service:
     uri: http://localhost:8008
+

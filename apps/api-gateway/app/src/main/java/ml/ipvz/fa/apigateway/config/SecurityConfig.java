@@ -12,6 +12,7 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain filterChain(ServerHttpSecurity http) {
         return http
+                .cors().disable()
                 .csrf().disable()
                 .httpBasic().disable()
                 .build();

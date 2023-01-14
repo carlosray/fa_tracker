@@ -32,8 +32,9 @@ public class LogUtils {
                                                URI uri,
                                                HttpHeaders headers,
                                                Object body) {
+        HttpHeaders headersToLog = HttpHeaders.writableHttpHeaders(headers);
         for (String header : FORBIDDEN_HEADERS) {
-            headers.replace(header, List.of("*****"));
+            headersToLog.replace(header, List.of("*****"));
         }
         return "%s: %s %s\nHeaders: %s\nBody: %s".formatted(
                 type,

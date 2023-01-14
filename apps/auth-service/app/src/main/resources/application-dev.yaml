@@ -20,6 +20,12 @@ logging:
     org.springframework.web.reactive.function.client: DEBUG
     reactor.ipc.netty.channel: DEBUG
 
+spring:
+  r2dbc:
+    properties:
+      ssl: false
+      sslMode: disable
+
 token:
   access:
     secret: "26042bww9u59bm5anbxwiv3ozjn8lp"
