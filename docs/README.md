@@ -6,7 +6,9 @@ Simple graphs and financial overviews provide actionable insights into the state
 - Spring Cloud (Microservice Architecture)
 - Reactive stack (Project Reactor)
 - PostgreSQL
+- MongoDB
 - Kafka
+- Liquibase Migrations
 - Kubernetes Support
 
 ## Structure
@@ -16,3 +18,13 @@ Simple graphs and financial overviews provide actionable insights into the state
 #### [apps](../apps) All applications (services).
 #### [docs](../docs) Contains all the documentation, internal and external documentation.
 #### [libs](../libs) All the common libraries.
+
+## Services
+| Service           | Port |
+|-------------------|------|
+| Api Gateway       | 8001 |
+| Auth Service      | 8002 |
+| Category Service  | 8003 |
+| Group Service     | 8004 |
+| Operation Service | 8005 |
+| User Service      | 8006 |

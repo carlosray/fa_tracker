@@ -1,0 +1,9 @@
+spring:
+  cloud:
+    kubernetes:
+      config:
+        enable-api: false
+        paths: /etc/config/application-${spring.profiles.active}.yaml
+      secrets:
+        enable-api: false
+        paths: /etc/secret

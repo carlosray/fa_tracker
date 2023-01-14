@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: operation-service
+  profiles:
+    active: dev
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+server:
+  port: 8005

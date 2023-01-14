@@ -38,7 +38,7 @@ management:
         enabled: true
 
 server:
-  port: 8008
+  port: 8002
 
 client:
   user-service:
