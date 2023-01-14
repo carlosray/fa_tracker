@@ -6,13 +6,13 @@
 
     <parent>
         <groupId>ml.ipvz.fa</groupId>
-        <artifactId>user-service</artifactId>
+        <artifactId>account-service</artifactId>
         <version>1.0.0</version>
     </parent>
 
-    <artifactId>user-service-app</artifactId>
+    <artifactId>account-service-app</artifactId>
 
-    <name>Tracker :: Apps :: User Service :: App</name>
+    <name>Tracker :: Apps :: Account Service :: App</name>
 
     <dependencies>
         <dependency>
@@ -33,7 +33,7 @@
 
         <dependency>
             <groupId>ml.ipvz.fa</groupId>
-            <artifactId>user-service-client</artifactId>
+            <artifactId>account-service-client</artifactId>
             <version>1.0.0</version>
         </dependency>
 

@@ -2,26 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>finance-tracker</artifactId>
-        <groupId>ml.ipvz.fa</groupId>
-        <version>1.0.0</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>apps</artifactId>
-    <name>Tracker :: Apps</name>
+    <parent>
+        <groupId>ml.ipvz.fa</groupId>
+        <artifactId>apps</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>account-service</artifactId>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>api-gateway</module>
-        <module>auth-service</module>
-        <module>user-service</module>
-        <module>group-service</module>
-        <module>category-service</module>
-        <module>operation-service</module>
-        <module>account-service</module>
-    </modules>
+    <name>Tracker :: Apps :: Account Service</name>
 
+    <modules>
+        <module>app</module>
+        <module>client</module>
+    </modules>
 
 </project>

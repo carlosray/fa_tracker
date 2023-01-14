@@ -1,6 +1,6 @@
 package ml.ipvz.fa.operationservice.model.entity
 
-import ml.ipvz.fa.operationservice.model.Currency
+import ml.ipvz.fa.cloud.model.Currency
 import java.math.BigDecimal
 import java.time.Instant
 
