@@ -3,7 +3,7 @@ db:
   port: 5432
   name: fa_auth
   username: fa_auth
-  password: uNx%4R1U*00Z
+  password: ""
 
 logging:
   level:

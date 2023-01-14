@@ -1,8 +1,12 @@
 package ml.ipvz.fa.userservice.exception
 
 import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 import org.springframework.web.server.ResponseStatusException
 
-class UserNotFoundException(login: String) : ResponseStatusException(HttpStatus.NOT_FOUND, "User $login not found")
+abstract class BaseResponseStatusException(status: HttpStatusCode, override val message: String) :
+    ResponseStatusException(status, message)
 
-class IncorrectPasswordException : ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Password incorrect")
+class UserNotFoundException(login: String) : BaseResponseStatusException(HttpStatus.NOT_FOUND, "User $login not found")
+
+class IncorrectPasswordException : BaseResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Password incorrect")
