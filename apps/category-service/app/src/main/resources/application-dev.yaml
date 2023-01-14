@@ -1,0 +1,17 @@
+db:
+  host: localhost
+  port: 5432
+  name: fa_category
+  username: fa_category
+  password: ""
+
+logging:
+  level:
+    io.r2dbc.postgresql.QUERY: DEBUG # for queries
+    io.r2dbc.postgresql.PARAM: DEBUG # for parameters
+
+spring:
+  r2dbc:
+    properties:
+      ssl: false
+      sslMode: disable
