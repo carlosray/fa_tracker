@@ -1,0 +1,68 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/carlosray/fa_tracker/category-service
+  pullPolicy: IfNotPresent
+imagePullSecrets: [ ]
+
+podAnnotations: { }
+podSecurityContext: { }
+securityContext: { }
+
+service:
+  type: ClusterIP
+  port: 80
+
+env:
+  - name: SPRING_PROFILES_ACTIVE
+    value: "prod"
+
+config:
+  mountPath: /etc/config
+  value:
+    server:
+      port: 8080
+    db:
+      host: common-postgres.postgres
+      port: 5432
+      name: fa_category_db
+      username: fa_user
+      password: <FILL>
+
+    logging:
+      level:
+        ml.ipvz.fa.exchange.logging: DEBUG
+
+secret:
+  mountPath: /etc/secret
+  value:
+    example: test
+
+resources:
+  limits:
+    cpu: 300m
+    memory: 512Mi
+  requests:
+    cpu: 150m
+    memory: 256Mi
+
+probe:
+  readiness:
+    path: /actuator/health/readiness
+    failureThreshold: 3
+    periodSeconds: 10
+    successThreshold: 1
+  liveness:
+    path: /actuator/health/liveness
+    failureThreshold: 3
+    periodSeconds: 10
+    successThreshold: 1
+  startup:
+    path: /actuator/health/liveness
+    failureThreshold: 30
+    periodSeconds: 10
+    successThreshold: 1
+
+nodeSelector: { }
+tolerations: [ ]
+affinity: { }

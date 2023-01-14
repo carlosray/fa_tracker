@@ -1,4 +1,4 @@
-name: Auth Service CI
+name: App Auth Service CI
 
 on:
   workflow_dispatch:

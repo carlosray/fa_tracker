@@ -1,4 +1,4 @@
-name: App User Service CI
+name: App Category Service CI
 
 on:
   workflow_dispatch:
@@ -7,10 +7,10 @@ on:
       - 'master'
       - 'dev/*'
     paths:
-      - 'apps/user-service/**'
+      - 'apps/category-service/**'
 
 env:
-  IMAGE: docker.pkg.github.com/${{ github.repository }}/user-service:${{ github.sha }}
+  IMAGE: docker.pkg.github.com/${{ github.repository }}/category-service:${{ github.sha }}
 
 jobs:
   build-jar-docker:
@@ -32,12 +32,12 @@ jobs:
           java-version: 17
           distribution: adopt
       - name: Build
-        run: mvn clean package --projects :user-service-app --also-make --threads=2 --batch-mode
+        run: mvn clean package --projects :category-service-app --also-make --threads=2 --batch-mode
       - name: Build and publish Docker image
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          docker build --tag ${IMAGE} --build-arg JAR_DIR=apps/user-service/app/target .
+          docker build --tag ${IMAGE} --build-arg JAR_DIR=apps/category-service/app/target .
           docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
           docker push ${IMAGE}
           
@@ -52,7 +52,7 @@ jobs:
         env:
           APP_VERSION: ${{ github.sha }}
         run: |
-          cd .helm/user-service
+          cd .helm/category-service
           sed -i "/^\([[:space:]]*appVersion: \).*/s//\1\"${APP_VERSION}\"/" Chart.yaml
           git config user.name github-actions
           git config user.email github-actions@github.com

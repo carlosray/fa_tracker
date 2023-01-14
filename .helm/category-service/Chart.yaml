@@ -1,0 +1,6 @@
+apiVersion: v2
+name: category-service
+description: A Helm chart for Tracker Category Service
+type: application
+version: 1.0.0
+appVersion: "1234567890"

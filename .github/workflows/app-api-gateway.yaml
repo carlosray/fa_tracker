@@ -1,4 +1,4 @@
-name: Api Gateway CI
+name: App Api Gateway CI
 
 on:
   workflow_dispatch:
