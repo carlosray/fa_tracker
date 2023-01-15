@@ -2,8 +2,8 @@ version: '2'
 
 services:
 
-  postgres-common-cluster:
-    container_name: postgres-common-cluster
+  fa-postgres-common-cluster:
+    container_name: fa-postgres-common-cluster
     image: postgres
     volumes:
       - ./docker-postgresql-multiple-databases:/docker-entrypoint-initdb.d
@@ -13,5 +13,19 @@ services:
       - POSTGRES_PASSWORD=
       - POSTGRES_HOST_AUTH_METHOD=trust
     restart: unless-stopped
-    ports: [ "5432:5432" ]
+    ports:
+      - "5432:5432"
+
+  fa-mongo:
+    container_name: fa-mongo
+    image: mongo:6.0.3
+    environment:
+      MONGO_INITDB_DATABASE: fa_db
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo-init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
 

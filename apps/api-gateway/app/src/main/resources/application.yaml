@@ -45,10 +45,29 @@ spring:
             - StripPrefix=1
             - Auth
 
+        #operation
+        - id: operation_create
+          uri: ${client.operation-service.uri}
+          predicates:
+            - Path=/api/operations
+            - Method=POST
+          filters:
+            - SetPath=/operations
+
+        - id: operation_get
+          uri: ${client.operation-service.uri}
+          predicates:
+            - Path=/api/operations
+            - Method=GET
+          filters:
+            - SetPath=/operations
+
 client:
   auth-service:
     uri: http://localhost
   user-service:
+    uri: http://localhost
+  operation-service:
     uri: http://localhost
 
 management:

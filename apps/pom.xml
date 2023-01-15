@@ -23,5 +23,12 @@
         <module>account-service</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>ml.ipvz.fa</groupId>
+            <artifactId>base-model</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -22,6 +22,12 @@ config:
   value:
     server:
       port: 8080
+    db:
+      host: mongo-mongodb.mongo
+      port: 27017
+      name: fa_operation
+      username: fa_user
+      password: <FILL>
     logging:
       level:
         ml.ipvz.fa.exchange.logging: DEBUG

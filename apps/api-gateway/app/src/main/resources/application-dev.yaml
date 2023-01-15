@@ -10,7 +10,9 @@ spring:
             maxAge: 3600
 client:
   user-service:
-    uri: http://localhost:8787
+    uri: http://localhost:8006
   auth-service:
-    uri: http://localhost:8008
+    uri: http://localhost:8002
+  operation-service:
+    uri: http://localhost:8005
 

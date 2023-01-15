@@ -32,3 +32,35 @@ Content-Type: application/json
   "lastName": "test-ln"
 }
 
+###
+POST {{operationService}}/operations
+Content-Type: application/json
+
+//{
+//  "groupId": 123,
+//  "description": "Description",
+//  "detail": {
+//    "type": "INCOME",
+//    "fromCategory": 111,
+//    "toAccount": 222,
+//    "amount": 65.4
+//  }
+//}
+{
+  "groupId": 123,
+  "description": "Description 456",
+  "detail": {
+    "type": "TRANSFER",
+    "commission": 1,
+    "rate": 1.12,
+    "resultAmount": 1,
+    "fromAccount": 111,
+    "toAccount": 222,
+    "amount": 65.4
+  }
+}
+
+###
+GET {{operationService}}/operations?groupId=123
+Content-Type: application/json
+

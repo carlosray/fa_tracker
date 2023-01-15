@@ -1,3 +1,10 @@
+db:
+  host: localhost
+  port: 27017
+  name: fa_db
+  username: fa_user
+  password: fa_pwd
+
 logging:
   level:
     io.r2dbc.postgresql.QUERY: DEBUG # for queries

@@ -1,17 +1,19 @@
 package ml.ipvz.fa.operationservice.model.entity
 
-import ml.ipvz.fa.cloud.model.Currency
-import java.math.BigDecimal
+import ml.ipvz.fa.operationservice.model.dto.Operation
+import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.Document
 import java.time.Instant
 
+@Document("operation")
 data class OperationEntity(
-    val id: Long? = null,
-    val name: String,
+    @Id
+    val id: String? = null,
+    val groupId: Long,
     val description: String,
-    val amount: BigDecimal,
-    val currency: Currency,
-    var created: Instant = Instant.now(),
-    var createdBy: String = "default",
-    var modified: Instant = Instant.now(),
-    var modifiedBy: String = "default"
+    val detail: Operation,
+    var created: Instant,
+    var createdBy: String,
+    var modified: Instant,
+    var modifiedBy: String
 )
