@@ -1,34 +1,28 @@
-package ml.ipvz.fa.authservice.service.jwt;
+package ml.ipvz.fa.authservice.service.impl;
 
 import java.time.Clock;
 import java.time.Instant;
-import java.util.Map;
 import java.util.Optional;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import ml.ipvz.fa.authservice.base.model.User;
+import ml.ipvz.fa.authservice.base.util.JwtUtil;
 import ml.ipvz.fa.authservice.exception.AccessTokenExpiredException;
-import ml.ipvz.fa.authservice.exception.RefreshTokenExpiredException;
-import ml.ipvz.fa.authservice.exception.RefreshTokenInvalidException;
 import ml.ipvz.fa.authservice.exception.RefreshTokenNotFoundException;
-import ml.ipvz.fa.authservice.model.CustomClaims;
-import ml.ipvz.fa.authservice.model.config.TokenConfig;
+import ml.ipvz.fa.authservice.model.config.AccessTokenType;
 import ml.ipvz.fa.authservice.model.entity.ClientEntity;
 import ml.ipvz.fa.authservice.model.token.AccessRefreshToken;
 import ml.ipvz.fa.authservice.model.token.AccessToken;
 import ml.ipvz.fa.authservice.model.token.Token;
 import ml.ipvz.fa.authservice.repository.AuthClientRepository;
+import ml.ipvz.fa.authservice.service.AccessTokenService;
 import ml.ipvz.fa.authservice.service.AuthenticationService;
 import ml.ipvz.fa.authservice.service.RefreshTokenService;
-import ml.ipvz.fa.authservice.service.TokenService;
 import ml.ipvz.fa.userservice.client.UserServiceClient;
 import ml.ipvz.fa.userservice.model.LoginDto;
-import ml.ipvz.fa.userservice.model.UserDto;
-import org.bouncycastle.util.encoders.Base64;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
@@ -39,36 +33,37 @@ import reactor.core.publisher.Mono;
 public class JwtAuthenticationService implements AuthenticationService {
 
     private final UserServiceClient userServiceClient;
-    private final TokenService tokenService;
+    private final AccessTokenService accessTokenService;
     private final RefreshTokenService refreshTokenService;
     private final AuthClientRepository clientRepository;
-    private final ObjectMapper mapper;
-    private final TokenConfig config;
     private final Clock clock;
 
     @Override
     @Transactional
     public Mono<AccessRefreshToken> login(Mono<LoginDto> loginDto) {
         return userServiceClient.login(loginDto)
+                .map(dto -> new User(dto.getId(), dto.getLogin(), dto.getRoles()))
                 .flatMap(this::generateTokenPair);
     }
 
-    private Mono<AccessRefreshToken> generateTokenPair(UserDto user) {
-        return generateAccessToken(user)
-                .zipWith(refreshTokenService.generate(config.getRefreshLength()))
-                .zipWhen(t -> saveClient(String.valueOf(user.getId()), t.getT2(), clock.instant()))
+    private Mono<AccessRefreshToken> generateTokenPair(User user) {
+        return generateExternalAccessToken(user)
+                .zipWith(generateRefreshToken(user))
+                .zipWhen(t -> saveClient(String.valueOf(user.id()), t.getT2(), clock.instant()))
                 .doOnNext(t -> log.info("Generated token pair for user {}", t.getT2().id()))
                 .map(t -> new AccessRefreshToken(t.getT1().getT1(), t.getT1().getT2()));
     }
 
-    @SneakyThrows
-    private Mono<String> generateAccessToken(UserDto user) {
-        Map<String, Object> claims = Map.of(
-                CustomClaims.USER, mapper.writeValueAsBytes(user),
-                Claims.ID, user.getId(),
-                Claims.SUBJECT, user.getLogin()
-        );
-        return tokenService.generate(claims);
+    private Mono<String> generateExternalAccessToken(User user) {
+        return accessTokenService.generate(user, AccessTokenType.EXTERNAL);
+    }
+
+    private Mono<String> generateInternalAccessToken(User user) {
+        return accessTokenService.generate(user, AccessTokenType.INTERNAL);
+    }
+
+    private Mono<String> generateRefreshToken(User user) {
+        return refreshTokenService.generate(user);
     }
 
     private Mono<ClientEntity> saveClient(String id, String refreshToken, Instant updated) {
@@ -80,16 +75,11 @@ public class JwtAuthenticationService implements AuthenticationService {
     @Override
     public Mono<AccessRefreshToken> refresh(Mono<AccessRefreshToken> accessRefreshToken) {
         return accessRefreshToken.flatMap(a ->
-                parseClaims(a.accessToken())
-                        .flatMap(r -> getUserFromClaims(r.claims()))
-                        .zipWhen(u -> findClient(String.valueOf(u.getId())))
+                parseExternalToken(a.accessToken())
+                        .map(r -> r.user)
+                        .zipWhen(u -> findClient(String.valueOf(u.id())))
                         .doOnNext(t -> validateRefreshToken(a.refreshToken(), t.getT2()))
                         .flatMap(t -> generateTokenPair(t.getT1())));
-    }
-
-    @SneakyThrows
-    private Mono<UserDto> getUserFromClaims(Claims claims) {
-        return Mono.just(mapper.readValue(Base64.decode(claims.get(CustomClaims.USER, String.class)), UserDto.class));
     }
 
     private Mono<ClientEntity> findClient(String id) {
@@ -97,33 +87,37 @@ public class JwtAuthenticationService implements AuthenticationService {
     }
 
     private void validateRefreshToken(String refreshToken, ClientEntity client) {
-        if (!client.refreshToken().equals(refreshToken)) {
-            throw new RefreshTokenInvalidException(refreshToken);
-        } else if (clock.instant().isAfter(client.updated().plus(config.getRefreshDuration()))) {
-            throw new RefreshTokenExpiredException();
-        }
+        refreshTokenService.validate(refreshToken, client);
     }
 
-    private Mono<ParseTokenResult> parseClaims(String token) {
-        return tokenService.parse(token)
-                .map(claims -> new ParseTokenResult(claims, Optional.empty()))
-                .onErrorResume(ExpiredJwtException.class, (e) -> Mono.just(new ParseTokenResult(e.getClaims(),
-                        Optional.of(e))));
+    private Mono<ParseTokenResult> parseExternalToken(String token) {
+        return accessTokenService.parse(token, AccessTokenType.EXTERNAL)
+                .map(ParseTokenResult::new)
+                .onErrorResume(ExpiredJwtException.class, (e) -> Mono.just(new ParseTokenResult(e.getClaims(), e)));
     }
 
     @Override
     public Mono<AccessToken> check(Mono<Token> token) {
-        return token.flatMap(t -> parseClaims(t.getAccessToken()))
-                .flatMap(r -> r.error.<Mono<ParseTokenResult>>map(throwable -> Mono.error(new AccessTokenExpiredException(throwable))).orElseGet(() -> Mono.just(r)))
-                .flatMap(r -> getUserFromClaims(r.claims))
-                .flatMap(this::generateAccessToken)
+        return token.flatMap(t -> parseExternalToken(t.getAccessToken()))
+                .flatMap(r -> r.error
+                        .<Mono<ParseTokenResult>>map(throwable -> Mono.error(new AccessTokenExpiredException(throwable)))
+                        .orElseGet(() -> Mono.just(r)))
+                .map(r -> r.user)
+                .flatMap(this::generateInternalAccessToken)
                 .map(AccessToken::new);
     }
 
 
     private record ParseTokenResult(
-            Claims claims,
+            User user,
             Optional<Throwable> error
     ) {
+        private ParseTokenResult(User user) {
+            this(user, Optional.empty());
+        }
+
+        private ParseTokenResult(Claims claims, Throwable throwable) {
+            this(JwtUtil.getUserFromClaims(claims), Optional.ofNullable(throwable));
+        }
     }
 }

@@ -18,6 +18,7 @@
         <module>exchange-logging</module>
         <module>base-cloud-app</module>
         <module>base-model</module>
+        <module>base-auth</module>
     </modules>
 
 </project>

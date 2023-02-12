@@ -28,7 +28,8 @@ config:
       name: fa_category_db
       username: fa_user
       password: <FILL>
-
+    token:
+      internal-key: <FILL>
     logging:
       level:
         ml.ipvz.fa.exchange.logging: DEBUG

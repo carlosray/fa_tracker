@@ -28,18 +28,15 @@ config:
       name: fa_auth_db
       username: fa_user
       password: <FILL>
-
     logging:
       level:
         ml.ipvz.fa.exchange.logging: DEBUG
-
     token:
-      access:
-        secret: <FILL>
-        valid-duration: PT10M
-        refresh-duration: PT30M
-        refresh-length: 50
-
+      external-key: <FILL>
+      internal-key: <FILL>
+      valid-duration: PT10M
+      refresh-duration: PT30M
+      refresh-length: 50
     client:
       user-service:
         uri: http://user-service:80

@@ -28,7 +28,8 @@ config:
       name: fa_user_db
       username: fa_user
       password: <FILL>
-
+    token:
+      internal-key: <FILL>
     pwd:
       encoder:
         strength: 10

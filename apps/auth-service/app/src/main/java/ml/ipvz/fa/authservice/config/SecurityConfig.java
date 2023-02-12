@@ -13,7 +13,7 @@ import org.springframework.security.web.server.SecurityWebFilterChain;
 public class SecurityConfig {
 
     @Bean
-    @ConfigurationProperties(prefix = "token.access")
+    @ConfigurationProperties(prefix = "token")
     public TokenConfig item() {
         return new TokenConfig();
     }

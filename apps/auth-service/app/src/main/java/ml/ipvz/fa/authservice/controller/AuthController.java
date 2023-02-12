@@ -2,10 +2,10 @@ package ml.ipvz.fa.authservice.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import ml.ipvz.fa.authservice.base.util.TokenUtils;
 import ml.ipvz.fa.authservice.model.token.AccessRefreshToken;
 import ml.ipvz.fa.authservice.model.token.AccessToken;
 import ml.ipvz.fa.authservice.service.AuthenticationService;
-import ml.ipvz.fa.authservice.util.TokenUtils;
 import ml.ipvz.fa.userservice.model.LoginDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +35,6 @@ public class AuthController {
 
     @GetMapping("check")
     public Mono<AccessToken> checkToken(@RequestHeader(HttpHeaders.AUTHORIZATION) String authHeader) {
-        return authenticationService.check(Mono.just(new AccessToken(TokenUtils.parseToken(authHeader))));
+        return authenticationService.check(TokenUtils.parseToken(authHeader).map(AccessToken::new));
     }
 }

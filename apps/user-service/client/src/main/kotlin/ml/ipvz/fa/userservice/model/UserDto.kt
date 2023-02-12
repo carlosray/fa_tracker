@@ -8,5 +8,6 @@ data class UserDto(
     val email: String,
     val firstName: String?,
     val lastName: String?,
-    val created: Instant
+    val created: Instant,
+    val roles: List<String>
 )

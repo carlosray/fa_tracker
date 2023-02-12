@@ -5,7 +5,13 @@ db:
   username: fa_user
   password: fa_pwd
 
+token:
+  internal-key: "default"
+
 logging:
   level:
     io.r2dbc.postgresql.QUERY: DEBUG # for queries
     io.r2dbc.postgresql.PARAM: DEBUG # for parameters
+    org:
+      springframework:
+        security: DEBUG

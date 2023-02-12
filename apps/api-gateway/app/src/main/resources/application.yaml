@@ -53,6 +53,7 @@ spring:
             - Method=POST
           filters:
             - SetPath=/operations
+            - Auth
 
         - id: operation_get
           uri: ${client.operation-service.uri}
@@ -61,6 +62,7 @@ spring:
             - Method=GET
           filters:
             - SetPath=/operations
+            - Auth
 
 client:
   auth-service:
