@@ -1,4 +1,4 @@
-package ml.ipvz.fa.authservice.base.service;
+package ml.ipvz.fa.authservice.base.service.impl;
 
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextImpl;

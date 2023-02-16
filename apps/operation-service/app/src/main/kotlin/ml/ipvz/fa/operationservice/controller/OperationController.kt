@@ -1,5 +1,8 @@
 package ml.ipvz.fa.operationservice.controller
 
+import ml.ipvz.fa.authservice.base.permission.annotation.CheckPermission
+import ml.ipvz.fa.authservice.base.permission.model.Resource
+import ml.ipvz.fa.authservice.base.permission.model.Role
 import ml.ipvz.fa.operationservice.model.dto.OperationEventDto
 import ml.ipvz.fa.operationservice.service.OperationService
 import org.springframework.web.bind.annotation.GetMapping
@@ -22,6 +25,7 @@ class OperationController(
         operationService.create(operation).map { it.toDto() }
 
     @GetMapping
+    @CheckPermission(resource = Resource.GROUP, role = Role.VIEWER, targetIdFieldName = "groupId")
     fun getOperations(@RequestParam(required = false, name = "groupId") groupId: Long?): Flux<OperationEventDto> =
         (if (groupId != null) operationService.getAllByGroupId(groupId) else operationService.getAll())
             .map { it.toDto() }

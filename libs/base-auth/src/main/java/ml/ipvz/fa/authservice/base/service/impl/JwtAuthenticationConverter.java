@@ -1,4 +1,4 @@
-package ml.ipvz.fa.authservice.base.service;
+package ml.ipvz.fa.authservice.base.service.impl;
 
 import ml.ipvz.fa.authservice.base.util.JwtUtil;
 import ml.ipvz.fa.authservice.base.util.TokenUtils;
