@@ -18,54 +18,42 @@ jobs:
           
       - uses: actions/delete-package-versions@v4
         name: auth-service clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with: 
-          package-name: 'auth-service'
+          package-name: 'fa_tracker/auth-service'
           package-type: 'container'
           min-versions-to-keep: 3
           
       - uses: actions/delete-package-versions@v4
         name: user-service clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with: 
-          package-name: 'user-service'
+          package-name: 'fa_tracker/user-service'
           package-type: 'container'
           min-versions-to-keep: 3
           
       - uses: actions/delete-package-versions@v4
         name: operation-service clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with: 
-          package-name: 'operation-service'
+          package-name: 'fa_tracker/operation-service'
           package-type: 'container'
           min-versions-to-keep: 3
           
       - uses: actions/delete-package-versions@v4
         name: category-service clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with: 
-          package-name: 'category-service'
+          package-name: 'fa_tracker/category-service'
           package-type: 'container'
           min-versions-to-keep: 3
           
       - uses: actions/delete-package-versions@v4
         name: account-service clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with: 
-          package-name: 'account-service'
+          package-name: 'fa_tracker/account-service'
           package-type: 'container'
           min-versions-to-keep: 3
       
       - uses: actions/delete-package-versions@v4
         name: group-service clean
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with: 
-          package-name: 'group-service'
+          package-name: 'fa_tracker/group-service'
           package-type: 'container'
           min-versions-to-keep: 3
