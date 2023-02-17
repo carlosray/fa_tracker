@@ -2,16 +2,72 @@
 
 name: Remove package versions
 on:
+  workflow_dispatch:
   schedule:
     - cron:  '0 8 * * *'
 jobs:
   remove-package-versions:
     runs-on: ubuntu-latest
     steps:
-      - name: Remove package versions
-        id: remove-package-versions
-        uses: navikt/remove-package-versions@main
+      - uses: actions/delete-package-versions@v4
+        name: api-gateway clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          keep_versions: 5
+        with: 
+          package-name: 'api-gateway'
+          package-type: 'container'
+          min-versions-to-keep: 3
+          
+      - uses: actions/delete-package-versions@v4
+        name: auth-service clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with: 
+          package-name: 'auth-service'
+          package-type: 'container'
+          min-versions-to-keep: 3
+          
+      - uses: actions/delete-package-versions@v4
+        name: user-service clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with: 
+          package-name: 'user-service'
+          package-type: 'container'
+          min-versions-to-keep: 3
+          
+      - uses: actions/delete-package-versions@v4
+        name: operation-service clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with: 
+          package-name: 'operation-service'
+          package-type: 'container'
+          min-versions-to-keep: 3
+          
+      - uses: actions/delete-package-versions@v4
+        name: category-service clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with: 
+          package-name: 'category-service'
+          package-type: 'container'
+          min-versions-to-keep: 3
+          
+      - uses: actions/delete-package-versions@v4
+        name: account-service clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with: 
+          package-name: 'account-service'
+          package-type: 'container'
+          min-versions-to-keep: 3
+      
+      - uses: actions/delete-package-versions@v4
+        name: group-service clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with: 
+          package-name: 'group-service'
+          package-type: 'container'
+          min-versions-to-keep: 3
