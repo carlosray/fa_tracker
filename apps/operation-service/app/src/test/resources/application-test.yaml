@@ -4,3 +4,6 @@ db:
   name: fa_db
   username: fa_user
   password: fa_pwd
+
+token:
+  internal-key: SF6KEb2sEhCAyA==
