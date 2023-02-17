@@ -16,7 +16,7 @@ jobs:
         with: 
           package-name: 'carlosray/fa_tracker/api-gateway'
           package-type: 'container'
-          token: ${{ secrets.GITHUB_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           min-versions-to-keep: 3
           
       - uses: actions/delete-package-versions@v4
