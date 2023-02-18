@@ -8,3 +8,6 @@ spring:
     user: sa
     password:
     enabled: true
+
+token:
+  internal-key: hSdgj/cERvlO/g==

@@ -14,4 +14,8 @@ pwd:
     strength: 10
 
 token:
-  internal-key: tBVFJo6x2DiFvA==
+  external-key: Y9hAjpm9noBBDw==
+  internal-key: YYKfKIvdRJ4ClQ==
+  valid-duration: PT10M
+  refresh-duration: PT20M
+  refresh-length: 50

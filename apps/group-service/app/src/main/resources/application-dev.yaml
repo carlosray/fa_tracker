@@ -5,6 +5,9 @@ db:
   username: fa_group
   password: ""
 
+token:
+  internal-key: "default"
+
 logging:
   level:
     io.r2dbc.postgresql.QUERY: DEBUG # for queries
