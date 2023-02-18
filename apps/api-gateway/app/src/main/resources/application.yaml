@@ -58,10 +58,10 @@ spring:
         - id: operation_get
           uri: ${client.operation-service.uri}
           predicates:
-            - Path=/api/operations
+            - Path=/api/operations/group/**
             - Method=GET
           filters:
-            - SetPath=/operations
+            - StripPrefix=1
             - Auth
 
 client:

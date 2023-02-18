@@ -1,11 +1,7 @@
 package ml.ipvz.fa.userservice.exception
 
+import ml.ipvz.fa.error.handling.exception.BaseResponseStatusException
 import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatusCode
-import org.springframework.web.server.ResponseStatusException
-
-abstract class BaseResponseStatusException(status: HttpStatusCode, override val message: String) :
-    ResponseStatusException(status, message)
 
 class UserNotFoundException(login: String) : BaseResponseStatusException(HttpStatus.NOT_FOUND, "User $login not found")
 

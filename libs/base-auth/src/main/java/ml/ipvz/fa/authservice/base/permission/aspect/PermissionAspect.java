@@ -2,9 +2,9 @@ package ml.ipvz.fa.authservice.base.permission.aspect;
 
 import java.lang.reflect.Method;
 
+import ml.ipvz.fa.authservice.base.exception.AccessForbiddenException;
 import ml.ipvz.fa.authservice.base.permission.Permission;
 import ml.ipvz.fa.authservice.base.permission.annotation.CheckPermission;
-import ml.ipvz.fa.authservice.base.permission.model.Target;
 import ml.ipvz.fa.authservice.base.service.PermissionChecker;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,15 +12,10 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.reactivestreams.Publisher;
-import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
-import org.springframework.web.server.ResponseStatusException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import static ml.ipvz.fa.authservice.base.permission.model.Target.ALL;
-import static ml.ipvz.fa.authservice.base.permission.model.Target.ID;
 
 @Aspect
 public class PermissionAspect {
@@ -48,14 +43,14 @@ public class PermissionAspect {
                         "org.reactivestreams.Publisher (i.e. Mono / Flux)"
         );
 
-        String targetId = getTargetId(parameterNames, args, annotation);
+        String groupId = getGroupId(parameterNames, args, annotation);
 
-        Permission permission = Permission.builder()
-                .resource(annotation.resource(), targetId)
+        Permission permission = Permission.builder(groupId)
+                .resource(annotation.resource())
                 .role(annotation.role());
 
         Mono<Boolean> afterCheck = checker.check(permission).filter(b -> b)
-                .switchIfEmpty(Mono.error(() -> accessDeniedException(permission)));
+                .switchIfEmpty(Mono.error(() -> accessForbiddenException(permission)));
 
         if (Mono.class.isAssignableFrom(returnType)) {
             return afterCheck.flatMap(__ -> this.proceed(pjp));
@@ -74,36 +69,31 @@ public class PermissionAspect {
         }
     }
 
-    private String getTargetId(String[] parameterNames, Object[] args, CheckPermission annotation) {
-        Target target = annotation.targetId().isBlank() && annotation.targetIdFieldName().isBlank() ? ALL : ID;
-        return switch (target) {
-            case ALL -> null;
-            case ID -> annotation.targetId().isBlank() ?
-                    findTargetIdFromField(parameterNames, args, annotation.targetIdFieldName()) :
-                    annotation.targetId();
-        };
+    private String getGroupId(String[] parameterNames, Object[] args, CheckPermission annotation) {
+        if (annotation.groupId().isBlank() && annotation.groupIdFieldName().isBlank()) {
+            throw new IllegalArgumentException("One of the #groupId or #groupIdFieldName must be specified");
+        }
+
+        return annotation.groupId().isBlank() ?
+                findGroupIdFromField(parameterNames, args, annotation.groupIdFieldName()) :
+                annotation.groupId();
     }
 
-    private String findTargetIdFromField(String[] parameterNames, Object[] args, String fieldName) {
-        String targetId = null;
+    private String findGroupIdFromField(String[] parameterNames, Object[] args, String fieldName) {
+        String groupId = null;
         for (int i = 0; i < parameterNames.length; i++) {
             if (fieldName.equalsIgnoreCase(parameterNames[i])) {
                 Object arg = args[i];
-                targetId = arg == null || arg instanceof String ? (String) arg : arg.toString();
+                groupId = arg == null || arg instanceof String ? (String) arg : arg.toString();
                 break;
             }
         }
-        return targetId;
+        return groupId;
     }
 
-    private Exception accessDeniedException(Permission permission) {
-        String msg = "Access denied. Required role %s for resource %s and %s"
-                .formatted(
-                        permission.role,
-                        permission.resource,
-                        permission.target == ALL ? "all ids" : "id " + permission.targetId
-                );
-        return new ResponseStatusException(HttpStatus.FORBIDDEN, msg);
+    private Exception accessForbiddenException(Permission permission) {
+        return new AccessForbiddenException("Access denied. Required role %s for resource %s in group %s"
+                .formatted(permission.role, permission.resource, permission.groupId));
     }
 
 }

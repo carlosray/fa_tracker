@@ -29,8 +29,8 @@ spring:
 token:
   external-key: "26042bww9u59bm5anbxwiv3ozjn8lp"
   internal-key: "default"
-  valid-duration: PT10M
-  refresh-duration: PT30M
+  valid-duration: PT1H
+  refresh-duration: PT2H
   refresh-length: 50
 
 client:

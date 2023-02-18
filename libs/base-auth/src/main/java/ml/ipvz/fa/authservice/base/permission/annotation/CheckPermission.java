@@ -20,12 +20,12 @@ public @interface CheckPermission {
     Role role();
 
     /**
-     * must be specified if you use {@link Target == ID} and {@link #targetIdFieldName is not set}
+     * must be specified if {@link #groupIdFieldName is not set}
      */
-    String targetId() default "";
+    String groupId() default "";
 
     /**
-     * must be specified if you use {@link Target == ID} and {@link #targetId is not set}
+     * must be specified if {@link #groupId is not set}
      */
-    String targetIdFieldName() default "";
+    String groupIdFieldName() default "";
 }

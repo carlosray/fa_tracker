@@ -12,3 +12,6 @@ spring:
 pwd:
   encoder:
     strength: 10
+
+token:
+  internal-key: LA9GttbMApwzaQ==

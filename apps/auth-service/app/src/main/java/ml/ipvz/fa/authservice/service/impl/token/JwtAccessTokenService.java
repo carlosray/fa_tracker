@@ -2,7 +2,7 @@ package ml.ipvz.fa.authservice.service.impl.token;
 
 import lombok.RequiredArgsConstructor;
 import ml.ipvz.fa.authservice.base.model.User;
-import ml.ipvz.fa.authservice.base.util.JwtUtil;
+import ml.ipvz.fa.authservice.base.util.JwtUtils;
 import ml.ipvz.fa.authservice.model.config.AccessTokenType;
 import ml.ipvz.fa.authservice.model.config.TokenConfig;
 import ml.ipvz.fa.authservice.service.AccessTokenService;
@@ -18,7 +18,7 @@ public class JwtAccessTokenService implements AccessTokenService {
 
     @Override
     public Mono<String> generate(User user, AccessTokenType type) {
-        return Mono.just(JwtUtil.generate(ISSUER, user, config.getValidDuration(), config.getKey(type)));
+        return Mono.just(JwtUtils.generate(ISSUER, user, config.getValidDuration(), config.getKey(type)));
     }
 
     @Override
@@ -26,7 +26,7 @@ public class JwtAccessTokenService implements AccessTokenService {
         return Mono.just(token)
                 .flatMap(t -> {
                     try {
-                        return Mono.just(JwtUtil.parse(token, config.getKey(type)));
+                        return Mono.just(JwtUtils.parse(token, config.getKey(type)));
                     } catch (Exception e) {
                         return Mono.error(e);
                     }

@@ -61,7 +61,7 @@ Content-Type: application/json
 }
 
 ###
-GET {{apiUrl}}/api/operations?groupId=123
+GET {{apiUrl}}/api/operations/group/1424
 Content-Type: application/json
 Authorization: Bearer {{accessToken}}
 

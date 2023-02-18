@@ -32,7 +32,6 @@ class OperationServiceImpl(private val operationRepository: OperationRepository)
         .flatMap(operationRepository::save)
         .doOnNext { log.info("Saved new ${it.detail.type} operation (${it.id}) for group (${it.groupId})") }
 
-    override fun getAll(): Flux<OperationEntity> = operationRepository.findAll()
-
-    override fun getAllByGroupId(groupId: Long): Flux<OperationEntity> = operationRepository.findAllByGroupId(groupId)
+    override fun getAll(groupId: Long?): Flux<OperationEntity> =
+        if (groupId != null) operationRepository.findAllByGroupId(groupId) else operationRepository.findAll()
 }

@@ -1,8 +1,13 @@
 package ml.ipvz.fa.authservice.base.permission.model;
 
 public enum Role {
-    //order is important
-    VIEWER,
-    EDITOR,
-    ADMIN
+    VIEWER(1),
+    EDITOR(2),
+    ADMIN(3);
+
+    public final int priority;
+
+    Role(int priority) {
+        this.priority = priority;
+    }
 }

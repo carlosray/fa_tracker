@@ -23,10 +23,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-public class JwtUtil {
-    private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
+public class JwtUtils {
+    private static final Logger log = LoggerFactory.getLogger(JwtUtils.class);
 
-    private JwtUtil() {
+    private JwtUtils() {
     }
 
     public static String generate(String issuer, User user, Duration validDuration, byte[] key) {

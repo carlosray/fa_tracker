@@ -2,6 +2,7 @@ package ml.ipvz.fa.authservice.service.impl;
 
 import java.time.Clock;
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Optional;
 
 import io.jsonwebtoken.Claims;
@@ -9,7 +10,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import ml.ipvz.fa.authservice.base.model.User;
-import ml.ipvz.fa.authservice.base.util.JwtUtil;
+import ml.ipvz.fa.authservice.base.util.JwtUtils;
 import ml.ipvz.fa.authservice.exception.AccessTokenExpiredException;
 import ml.ipvz.fa.authservice.exception.RefreshTokenNotFoundException;
 import ml.ipvz.fa.authservice.model.config.AccessTokenType;
@@ -42,7 +43,8 @@ public class JwtAuthenticationService implements AuthenticationService {
     @Transactional
     public Mono<AccessRefreshToken> login(Mono<LoginDto> loginDto) {
         return userServiceClient.login(loginDto)
-                .map(dto -> new User(dto.getId(), dto.getLogin(), dto.getRoles()))
+                .map(dto -> new User(dto.getId(), dto.getLogin(),
+                        dto.getPermissions().stream().map(Objects::toString).toList()))
                 .flatMap(this::generateTokenPair);
     }
 
@@ -117,7 +119,7 @@ public class JwtAuthenticationService implements AuthenticationService {
         }
 
         private ParseTokenResult(Claims claims, Throwable throwable) {
-            this(JwtUtil.getUserFromClaims(claims), Optional.ofNullable(throwable));
+            this(JwtUtils.getUserFromClaims(claims), Optional.ofNullable(throwable));
         }
     }
 }

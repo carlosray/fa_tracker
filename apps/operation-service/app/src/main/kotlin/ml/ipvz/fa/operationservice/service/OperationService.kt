@@ -7,6 +7,5 @@ import reactor.core.publisher.Mono
 
 interface OperationService {
     fun create(operation: Mono<OperationEventDto>): Mono<OperationEntity>
-    fun getAll(): Flux<OperationEntity>
-    fun getAllByGroupId(groupId: Long): Flux<OperationEntity>
+    fun getAll(groupId: Long? = null): Flux<OperationEntity>
 }

@@ -15,7 +15,7 @@ public class BasePermissionChecker implements PermissionChecker {
 
     @Override
     public Mono<Boolean> check(Permission permission) {
-        return getPermissions().filter(p -> p.hasPermission(permission)).hasElements();
+        return getPermissions().any(p -> p.hasPermission(permission));
     }
 
     private Flux<Permission> getPermissions() {

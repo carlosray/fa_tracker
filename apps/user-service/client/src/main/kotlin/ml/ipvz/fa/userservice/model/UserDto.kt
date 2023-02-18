@@ -1,5 +1,6 @@
 package ml.ipvz.fa.userservice.model;
 
+import ml.ipvz.fa.authservice.base.permission.Permission
 import java.time.Instant;
 
 data class UserDto(
@@ -9,5 +10,5 @@ data class UserDto(
     val firstName: String?,
     val lastName: String?,
     val created: Instant,
-    val roles: List<String>
+    val permissions: List<Permission>
 )

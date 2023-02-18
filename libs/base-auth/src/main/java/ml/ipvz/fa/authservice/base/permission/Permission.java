@@ -4,48 +4,38 @@ import java.util.Objects;
 
 import ml.ipvz.fa.authservice.base.permission.model.Resource;
 import ml.ipvz.fa.authservice.base.permission.model.Role;
-import ml.ipvz.fa.authservice.base.permission.model.Target;
 import org.springframework.lang.NonNull;
-import org.springframework.lang.Nullable;
 
 public final class Permission {
+    public final String groupId;
     public final Resource resource;
-    public final Target target;
     public final Role role;
-    @Nullable
-    public final String targetId;
 
-    Permission(Resource resource, Target target, @Nullable String targetId, Role role) {
-        if (target == Target.ID && targetId == null) {
-            throw new IllegalArgumentException("targetId must not be null");
-        }
+    Permission(Resource resource, String groupId, Role role) {
         this.resource = resource;
-        this.target = target;
-        this.targetId = targetId;
+        this.groupId = groupId;
         this.role = role;
     }
 
-    public static ResourceBuilder builder() {
-        return new ResourceBuilder();
+    public static ResourceBuilder builder(String groupId) {
+        return new ResourceBuilder(groupId);
     }
 
-    static Permission fromString(@NonNull String permission) {
+    public static Permission fromString(@NonNull String permission) {
         String[] parts = permission.toUpperCase().split("\\.");
         if (parts.length != 3) {
             throw new IllegalArgumentException("permission invalid: " + permission);
         }
         Resource resource = Resource.valueOf(parts[0]);
-        Target target = Target.ALL.name().equalsIgnoreCase(parts[1]) ? Target.ALL : Target.ID;
-        String targetId = target == Target.ID ? parts[1] : null;
+        String groupId = parts[1];
         Role role = Role.valueOf(parts[2]);
 
-        return new Permission(resource, target, targetId, role);
+        return new Permission(resource, groupId, role);
     }
 
     @Override
     public String toString() {
-        String id = target == Target.ID ? targetId : target.name();
-        return "%s.%s.%s".formatted(resource, id, role).toLowerCase();
+        return "%s.%s.%s".formatted(groupId, resource, role).toLowerCase();
     }
 
     @Override
@@ -57,81 +47,62 @@ public final class Permission {
             return false;
         }
         Permission that = (Permission) o;
-        return resource == that.resource && target == that.target && role == that.role;
+        return resource == that.resource && Objects.equals(groupId, that.groupId) && role == that.role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(resource, target, role);
+        return Objects.hash(resource, groupId, role);
     }
 
     public boolean hasPermission(Permission o) {
-        if (this == o) return true;
-        if (this.resource != o.resource) return false;
-        if (this.target == Target.ID) {
-            if (o.target == Target.ALL) {
-                return false;
-            } else if (!Objects.requireNonNull(this.targetId).equalsIgnoreCase(o.targetId)) {
-                return false;
-            }
+        if (this == o) {
+            return true;
         }
-        return this.role.compareTo(o.role) >= 0;
+        if (!this.groupId.equalsIgnoreCase(o.groupId)) {
+            return false;
+        }
+
+        boolean isRoleGreaterOrEq = this.role.compareTo(o.role) >= 0;
+
+        return isRoleGreaterOrEq && (this.resource == o.resource || this.resource.level < o.resource.level);
     }
 
     public static class ResourceBuilder {
-        private ResourceBuilder() {
+        private final String groupId;
+
+        private ResourceBuilder(String groupId) {
+            this.groupId = groupId;
         }
 
         public RoleBuilder group() {
-            return group(null);
-        }
-
-        public RoleBuilder group(String id) {
-            return resource(Resource.GROUP, id);
+            return resource(Resource.GROUP);
         }
 
         public RoleBuilder category() {
-            return category(null);
-        }
-
-        public RoleBuilder category(String id) {
-            return resource(Resource.CATEGORY, id);
+            return resource(Resource.CATEGORY);
         }
 
         public RoleBuilder account() {
-            return account(null);
-        }
-
-        public RoleBuilder account(String id) {
-            return resource(Resource.ACCOUNT, id);
+            return resource(Resource.ACCOUNT);
         }
 
         public RoleBuilder operation() {
-            return operation(null);
-        }
-
-        public RoleBuilder operation(String id) {
-            return resource(Resource.OPERATION, id);
+            return resource(Resource.OPERATION);
         }
 
         public RoleBuilder resource(Resource resource) {
-            return resource(resource, null);
-        }
-
-        public RoleBuilder resource(Resource resource, @Nullable String id) {
-            return new RoleBuilder(resource, id);
+            return new RoleBuilder(resource, groupId);
         }
     }
 
     public static class RoleBuilder {
         private final Resource resource;
-        private final Target target;
-        private final String targetId;
+        private final String groupId;
 
-        private RoleBuilder(Resource resource, String targetId) {
+        private RoleBuilder(Resource resource, String groupId) {
             this.resource = resource;
-            this.targetId = targetId;
-            this.target = targetId == null ? Target.ALL : Target.ID;
+            this.groupId = groupId;
         }
 
         public Permission viewer() {
@@ -147,7 +118,7 @@ public final class Permission {
         }
 
         public Permission role(Role role) {
-            return new Permission(resource, target, targetId, role);
+            return new Permission(resource, groupId, role);
         }
     }
 
