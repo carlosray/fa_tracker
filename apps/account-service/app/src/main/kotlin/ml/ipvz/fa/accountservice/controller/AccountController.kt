@@ -20,5 +20,5 @@ class AccountController(
     @GetMapping("group/{groupId}/{accountId}")
     @CheckPermission(resource = Resource.ACCOUNT, role = Role.VIEWER, groupIdFieldName = "groupId")
     fun getAccount(@PathVariable groupId: Long, @PathVariable accountId: Long): Mono<AccountDto> =
-        accountService.getAccount(groupId, accountId)
+        accountService.getAccount(groupId, accountId).map { it.toDto() }
 }

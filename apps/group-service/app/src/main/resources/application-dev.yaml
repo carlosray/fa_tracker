@@ -8,6 +8,10 @@ db:
 token:
   internal-key: "default"
 
+client:
+  balance-service:
+    uri: http://localhost:8008
+
 logging:
   level:
     io.r2dbc.postgresql.QUERY: DEBUG # for queries

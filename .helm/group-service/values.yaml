@@ -30,6 +30,9 @@ config:
       password: <FILL>
     token:
       internal-key: <FILL>
+    client:
+      balance-service:
+        uri: http://balance-service:8008
     logging:
       level:
         ml.ipvz.fa.exchange.logging: DEBUG

@@ -11,3 +11,7 @@ spring:
 
 token:
   internal-key: Z2VtSArizODZRQ==
+
+client:
+  balance-service:
+    uri: http://localhost:8008
