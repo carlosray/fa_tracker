@@ -3,4 +3,4 @@ name: group-service
 description: A Helm chart for Tracker Group Service
 type: application
 version: 1.0.0
-appVersion: "974d0624a7e0af05a74f7536cd6f26cd3a851e96"
+appVersion: "1aa994d576e0660710d01143109ee2ef75350006"
