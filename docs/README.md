@@ -20,12 +20,13 @@ Simple graphs and financial overviews provide actionable insights into the state
 #### [libs](../libs) All the common libraries.
 
 ## Services
-| Service           | Port |
-|-------------------|------|
-| Api Gateway       | 8001 |
-| Auth Service      | 8002 |
-| Category Service  | 8003 |
-| Group Service     | 8004 |
-| Operation Service | 8005 |
-| User Service      | 8006 |
-| Account Service   | 8007 |
+| Service                                        | Dev Port |
+|------------------------------------------------|----------|
+| [Api Gateway](../apps/api-gateway)             | 8001     |
+| [Auth Service](../apps/auth-service)           | 8002     |
+| [Category Service](../apps/category-service)   | 8003     |
+| [Group Service](../apps/group-service)         | 8004     |
+| [Operation Service](../apps/operation-service) | 8005     |
+| [User Service](../apps/user-service)           | 8006     |
+| [Account Service](../apps/account-service)     | 8007     |
+| [Balance Service](../apps/balance-service)     | 8008     |
