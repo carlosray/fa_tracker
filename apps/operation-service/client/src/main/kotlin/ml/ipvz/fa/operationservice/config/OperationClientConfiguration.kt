@@ -12,6 +12,7 @@ import org.springframework.http.codec.ClientCodecConfigurer
 import org.springframework.http.codec.json.Jackson2JsonDecoder
 import org.springframework.http.codec.json.Jackson2JsonEncoder
 import org.springframework.web.reactive.function.client.WebClient
+import java.time.Duration
 
 @Configuration
 class OperationClientConfiguration {
@@ -33,5 +34,5 @@ class OperationClientConfiguration {
 
     @Bean
     fun operationServiceClient(@Qualifier("operationServiceWebClient") operationServiceWebClient: WebClient): OperationServiceClient =
-        OperationServiceClientImpl(operationServiceWebClient)
+        OperationServiceClientImpl(operationServiceWebClient, Duration.ofSeconds(30))
 }

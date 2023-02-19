@@ -22,7 +22,7 @@ public @interface CheckPermission {
     /**
      * must be specified if {@link #groupIdFieldName is not set}
      */
-    String groupId() default "";
+    long groupId() default -1;
 
     /**
      * must be specified if {@link #groupId is not set}

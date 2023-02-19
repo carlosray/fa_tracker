@@ -7,17 +7,17 @@ import ml.ipvz.fa.authservice.base.permission.model.Role;
 import org.springframework.lang.NonNull;
 
 public final class Permission {
-    public final String groupId;
+    public final Long groupId;
     public final Resource resource;
     public final Role role;
 
-    Permission(Resource resource, String groupId, Role role) {
+    Permission(Resource resource, Long groupId, Role role) {
         this.resource = resource;
         this.groupId = groupId;
         this.role = role;
     }
 
-    public static ResourceBuilder builder(String groupId) {
+    public static ResourceBuilder builder(Long groupId) {
         return new ResourceBuilder(groupId);
     }
 
@@ -27,7 +27,7 @@ public final class Permission {
             throw new IllegalArgumentException("permission invalid: " + permission);
         }
         Resource resource = Resource.valueOf(parts[0]);
-        String groupId = parts[1];
+        Long groupId = Long.parseLong(parts[1]);
         Role role = Role.valueOf(parts[2]);
 
         return new Permission(resource, groupId, role);
@@ -59,7 +59,7 @@ public final class Permission {
         if (this == o) {
             return true;
         }
-        if (!this.groupId.equalsIgnoreCase(o.groupId)) {
+        if (!Objects.equals(this.groupId, o.groupId)) {
             return false;
         }
 
@@ -69,9 +69,9 @@ public final class Permission {
     }
 
     public static class ResourceBuilder {
-        private final String groupId;
+        private final Long groupId;
 
-        private ResourceBuilder(String groupId) {
+        private ResourceBuilder(Long groupId) {
             this.groupId = groupId;
         }
 
@@ -98,9 +98,9 @@ public final class Permission {
 
     public static class RoleBuilder {
         private final Resource resource;
-        private final String groupId;
+        private final Long groupId;
 
-        private RoleBuilder(Resource resource, String groupId) {
+        private RoleBuilder(Resource resource, Long groupId) {
             this.resource = resource;
             this.groupId = groupId;
         }

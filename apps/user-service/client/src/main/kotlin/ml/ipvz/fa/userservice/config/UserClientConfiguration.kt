@@ -32,5 +32,5 @@ class UserClientConfiguration {
 
     @Bean
     fun userServiceClient(@Qualifier("userServiceWebClient") userServiceWebClient: WebClient): UserServiceClient =
-        UserServiceClientImpl(userServiceWebClient, Duration.ofSeconds(10))
+        UserServiceClientImpl(userServiceWebClient, Duration.ofSeconds(30))
 }

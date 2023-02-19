@@ -1,5 +1,6 @@
 package ml.ipvz.fa.groupservice
 
+import ml.ipvz.fa.balanceservice.config.BalanceClientConfiguration
 import ml.ipvz.fa.error.handling.handler.BaseApiExceptionHandler
 import ml.ipvz.fa.exchange.logging.LoggingWebFilter
 import ml.ipvz.fa.groupservice.config.GroupClientConfiguration
@@ -16,7 +17,7 @@ import org.springframework.context.annotation.Import
         Filter(type = FilterType.ASSIGNABLE_TYPE, classes = [GroupClientConfiguration::class])
     ]
 )
-@Import(LoggingWebFilter::class, BaseApiExceptionHandler::class)
+@Import(LoggingWebFilter::class, BaseApiExceptionHandler::class, BalanceClientConfiguration::class)
 class GroupServiceApplication
 
 fun main(args: Array<String>) {

@@ -1,6 +1,7 @@
 package ml.ipvz.fa.authservice.base.permission.aspect;
 
 import java.lang.reflect.Method;
+import java.util.Optional;
 
 import ml.ipvz.fa.authservice.base.exception.AccessForbiddenException;
 import ml.ipvz.fa.authservice.base.permission.Permission;
@@ -12,6 +13,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.reactivestreams.Publisher;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -19,6 +23,8 @@ import reactor.core.publisher.Mono;
 
 @Aspect
 public class PermissionAspect {
+    private static final Logger log = LoggerFactory.getLogger(PermissionAspect.class);
+
     private final PermissionChecker checker;
 
     public PermissionAspect(PermissionChecker checker) {
@@ -43,7 +49,7 @@ public class PermissionAspect {
                         "org.reactivestreams.Publisher (i.e. Mono / Flux)"
         );
 
-        String groupId = getGroupId(parameterNames, args, annotation);
+        Long groupId = getGroupId(parameterNames, args, annotation);
 
         Permission permission = Permission.builder(groupId)
                 .resource(annotation.resource())
@@ -69,17 +75,17 @@ public class PermissionAspect {
         }
     }
 
-    private String getGroupId(String[] parameterNames, Object[] args, CheckPermission annotation) {
-        if (annotation.groupId().isBlank() && annotation.groupIdFieldName().isBlank()) {
+    private Long getGroupId(String[] parameterNames, Object[] args, CheckPermission annotation) {
+        if (annotation.groupId() < 0 && annotation.groupIdFieldName().isBlank()) {
             throw new IllegalArgumentException("One of the #groupId or #groupIdFieldName must be specified");
         }
 
-        return annotation.groupId().isBlank() ?
+        return annotation.groupId() < 0 ?
                 findGroupIdFromField(parameterNames, args, annotation.groupIdFieldName()) :
                 annotation.groupId();
     }
 
-    private String findGroupIdFromField(String[] parameterNames, Object[] args, String fieldName) {
+    private Long findGroupIdFromField(String[] parameterNames, Object[] args, String fieldName) {
         String groupId = null;
         for (int i = 0; i < parameterNames.length; i++) {
             if (fieldName.equalsIgnoreCase(parameterNames[i])) {
@@ -88,7 +94,17 @@ public class PermissionAspect {
                 break;
             }
         }
-        return groupId;
+
+        return parseGroupId(groupId).orElse(-1L);
+    }
+
+    private Optional<Long> parseGroupId(@Nullable String id) {
+        try {
+            return Optional.ofNullable(id).map(Long::parseLong);
+        } catch (NumberFormatException e) {
+            log.warn("Provided id is not parsable: {}", id);
+            return Optional.empty();
+        }
     }
 
     private Exception accessForbiddenException(Permission permission) {

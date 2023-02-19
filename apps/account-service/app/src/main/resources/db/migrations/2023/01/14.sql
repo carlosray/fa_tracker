@@ -10,7 +10,6 @@ create table account
             primary key,
     name        varchar(255) not null,
     config      jsonb        not null,
-    type        varchar(60)  not null,
     group_id    bigint       not null,
     created     timestamp    default now(),
     created_by  varchar(255) default CURRENT_USER,

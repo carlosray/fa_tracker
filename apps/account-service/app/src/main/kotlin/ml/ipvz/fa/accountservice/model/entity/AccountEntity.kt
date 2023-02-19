@@ -1,6 +1,5 @@
 package ml.ipvz.fa.accountservice.model.entity
 
-import ml.ipvz.fa.cloud.model.Currency
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
@@ -15,7 +14,6 @@ data class AccountEntity(
     val id: Long? = null,
     val name: String,
     val config: AccountConfig,
-    val currency: Currency,
     val groupId: Long,
     @CreatedDate
     var created: Instant = Instant.now(),

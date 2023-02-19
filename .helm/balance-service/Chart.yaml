@@ -1,0 +1,6 @@
+apiVersion: v2
+name: balance-service
+description: A Helm chart for Tracker Balance Service
+type: application
+version: 1.0.0
+appVersion: "e76e9eb6e42687821eef76732091f028c1f2cfec"
