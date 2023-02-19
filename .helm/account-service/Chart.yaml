@@ -3,4 +3,4 @@ name: account-service
 description: A Helm chart for Tracker Account Service
 type: application
 version: 1.0.0
-appVersion: "57f73b4bd5deeefbfdae75437b28d1e8879c3946"
+appVersion: "1aa994d576e0660710d01143109ee2ef75350006"
