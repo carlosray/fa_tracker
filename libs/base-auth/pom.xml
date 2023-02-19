@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>base-auth</artifactId>
-    <name>Tracker :: Libs :: Base Model</name>
+    <name>Tracker :: Libs :: Base Auth</name>
 
     <dependencies>
         <dependency>
