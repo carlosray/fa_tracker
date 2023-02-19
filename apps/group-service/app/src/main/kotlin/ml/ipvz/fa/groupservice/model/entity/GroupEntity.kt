@@ -1,5 +1,6 @@
 package ml.ipvz.fa.groupservice.model.entity
 
+import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.LastModifiedBy
@@ -13,10 +14,11 @@ data class GroupEntity(
     val id: Long? = null,
     val name: String,
     val config: GroupConfig,
-    val owner: Long,
     val description: String,
     @CreatedDate
     var created: Instant = Instant.now(),
+    @CreatedBy
+    var createdBy: String = "default",
     @LastModifiedDate
     var modified: Instant = Instant.now(),
     @LastModifiedBy

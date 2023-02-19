@@ -11,8 +11,8 @@ create table "group"
     name        varchar(255),
     config      jsonb     not null,
     description text,
-    owner       bigint    not null,
-    created     timestamp not null default now(),
+    created     timestamp    default now(),
+    created_by  varchar(255) default CURRENT_USER,
     modified    timestamp          default now(),
     modified_by varchar(255)       default CURRENT_USER
 );
