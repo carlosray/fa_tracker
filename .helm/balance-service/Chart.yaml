@@ -3,4 +3,4 @@ name: balance-service
 description: A Helm chart for Tracker Balance Service
 type: application
 version: 1.0.0
-appVersion: "1aa994d576e0660710d01143109ee2ef75350006"
+appVersion: "c5980e6cf0ebf1f0a993521718f910ffdf8e40d4"
