@@ -26,7 +26,10 @@ class SecurityConfig(
 
             .securityContextRepository(serverSecurityContextRepository)
 
-            .authorizeExchange().anyExchange().authenticated()
+            .authorizeExchange()
+            .pathMatchers("/actuator/health").permitAll() //health
+            .anyExchange().authenticated()
+
             .and()
             .build()
     }
