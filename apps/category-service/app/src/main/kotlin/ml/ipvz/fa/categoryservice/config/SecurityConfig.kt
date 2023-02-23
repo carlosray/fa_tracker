@@ -27,7 +27,7 @@ class SecurityConfig(
             .securityContextRepository(serverSecurityContextRepository)
 
             .authorizeExchange()
-            .pathMatchers("/actuator/health").permitAll() //health
+            .pathMatchers("/actuator/health/**").permitAll() //health
             .anyExchange().authenticated()
 
             .and()
