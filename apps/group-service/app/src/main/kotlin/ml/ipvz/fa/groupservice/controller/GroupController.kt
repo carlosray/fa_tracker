@@ -4,11 +4,14 @@ import ml.ipvz.fa.authservice.base.model.User
 import ml.ipvz.fa.authservice.base.permission.annotation.CheckPermission
 import ml.ipvz.fa.authservice.base.permission.model.Resource
 import ml.ipvz.fa.authservice.base.permission.model.Role
+import ml.ipvz.fa.groupservice.model.GroupCreateDto
 import ml.ipvz.fa.groupservice.model.GroupDto
 import ml.ipvz.fa.groupservice.service.GroupService
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Flux
@@ -29,6 +32,10 @@ class GroupController(
 
     @GetMapping("{groupId}")
     @CheckPermission(resource = Resource.GROUP, role = Role.VIEWER, groupId = "#groupId")
-    fun getGroup(@PathVariable groupId: Long, @AuthenticationPrincipal user: User): Mono<GroupDto> =
+    fun getGroup(@PathVariable groupId: Long): Mono<GroupDto> =
         groupService.getGroupsByIds(setOf(groupId)).toMono()
+
+    @PostMapping
+    fun createGroup(@RequestBody group: GroupCreateDto, @AuthenticationPrincipal user: User): Mono<GroupDto> =
+        groupService.createGroup(group, user)
 }

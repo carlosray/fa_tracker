@@ -5,6 +5,6 @@ import ml.ipvz.fa.cloud.model.Balance
 data class GroupDto(
     val id: Long,
     val name: String,
-    val isCurrent: Boolean,
+    val description: String,
     val balance: Balance
 )

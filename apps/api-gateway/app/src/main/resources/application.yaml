@@ -74,6 +74,15 @@ spring:
             - StripPrefix=1
             - Auth
 
+        - id: groups_create
+          uri: ${client.group-service.uri}
+          predicates:
+            - Path=/api/groups
+            - Method=POST
+          filters:
+            - StripPrefix=1
+            - Auth
+
 client:
   auth-service:
     uri: http://localhost
