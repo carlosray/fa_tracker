@@ -27,7 +27,7 @@ spring:
           filters:
             - SetPath=/auth/refresh
 
-        #user
+        #users
         - id: user_register
           uri: ${client.user-service.uri}
           predicates:
@@ -45,7 +45,7 @@ spring:
             - StripPrefix=1
             - Auth
 
-        #operation
+        #operations
         - id: operation_create
           uri: ${client.operation-service.uri}
           predicates:
@@ -64,12 +64,24 @@ spring:
             - StripPrefix=1
             - Auth
 
+        #group
+        - id: groups_get
+          uri: ${client.group-service.uri}
+          predicates:
+            - Path=/api/groups/**
+            - Method=GET
+          filters:
+            - StripPrefix=1
+            - Auth
+
 client:
   auth-service:
     uri: http://localhost
   user-service:
     uri: http://localhost
   operation-service:
+    uri: http://localhost
+  group-service:
     uri: http://localhost
 
 management:

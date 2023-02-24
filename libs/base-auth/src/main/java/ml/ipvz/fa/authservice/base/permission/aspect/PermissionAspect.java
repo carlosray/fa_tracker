@@ -15,6 +15,9 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import reactor.core.Exceptions;
@@ -26,6 +29,7 @@ public class PermissionAspect {
     private static final Logger log = LoggerFactory.getLogger(PermissionAspect.class);
 
     private final PermissionChecker checker;
+    private final ExpressionParser parser = new SpelExpressionParser();
 
     public PermissionAspect(PermissionChecker checker) {
         this.checker = checker;
@@ -56,7 +60,7 @@ public class PermissionAspect {
                 .role(annotation.role());
 
         Mono<Boolean> afterCheck = checker.check(permission).filter(b -> b)
-                .switchIfEmpty(Mono.error(() -> accessForbiddenException(permission)));
+                .switchIfEmpty(Mono.error(() -> new AccessForbiddenException(permission)));
 
         if (Mono.class.isAssignableFrom(returnType)) {
             return afterCheck.flatMap(__ -> this.proceed(pjp));
@@ -76,40 +80,23 @@ public class PermissionAspect {
     }
 
     private Long getGroupId(String[] parameterNames, Object[] args, CheckPermission annotation) {
-        if (annotation.groupId() < 0 && annotation.groupIdFieldName().isBlank()) {
-            throw new IllegalArgumentException("One of the #groupId or #groupIdFieldName must be specified");
-        }
-
-        return annotation.groupId() < 0 ?
-                findGroupIdFromField(parameterNames, args, annotation.groupIdFieldName()) :
-                annotation.groupId();
-    }
-
-    private Long findGroupIdFromField(String[] parameterNames, Object[] args, String fieldName) {
-        String groupId = null;
+        StandardEvaluationContext context = new StandardEvaluationContext();
         for (int i = 0; i < parameterNames.length; i++) {
-            if (fieldName.equalsIgnoreCase(parameterNames[i])) {
-                Object arg = args[i];
-                groupId = arg == null || arg instanceof String ? (String) arg : arg.toString();
-                break;
-            }
+            context.setVariable(parameterNames[i], args[i]);
         }
+        Object groupId = parser.parseExpression(annotation.groupId()).getValue(context);
 
         return parseGroupId(groupId).orElse(-1L);
     }
 
-    private Optional<Long> parseGroupId(@Nullable String id) {
+    private Optional<Long> parseGroupId(@Nullable Object arg) {
+        String id = arg == null || arg instanceof String ? (String) arg : arg.toString();
         try {
             return Optional.ofNullable(id).map(Long::parseLong);
         } catch (NumberFormatException e) {
             log.warn("Provided id is not parsable: {}", id);
             return Optional.empty();
         }
-    }
-
-    private Exception accessForbiddenException(Permission permission) {
-        return new AccessForbiddenException("Access denied. Required role %s for resource %s in group %s"
-                .formatted(permission.role, permission.resource, permission.groupId));
     }
 
 }

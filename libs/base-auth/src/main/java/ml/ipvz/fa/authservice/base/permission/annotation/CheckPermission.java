@@ -20,12 +20,7 @@ public @interface CheckPermission {
     Role role();
 
     /**
-     * must be specified if {@link #groupIdFieldName is not set}
+     * expression to obtain groupId
      */
-    long groupId() default -1;
-
-    /**
-     * must be specified if {@link #groupId is not set}
-     */
-    String groupIdFieldName() default "";
+    String groupId() default "";
 }

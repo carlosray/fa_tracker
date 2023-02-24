@@ -20,7 +20,7 @@ class BalanceController(
 ) {
 
     @GetMapping("group/{groupId}")
-    @CheckPermission(resource = Resource.GROUP, role = Role.VIEWER, groupIdFieldName = "groupId")
+    @CheckPermission(resource = Resource.GROUP, role = Role.VIEWER, groupId = "#groupId")
     fun getGroupBalance(
         @PathVariable groupId: Long,
         @RequestParam(required = false) currency: Currency?
@@ -28,7 +28,7 @@ class BalanceController(
         balanceService.getGroupBalance(groupId, currency).map { BalanceDto(groupId, it) }
 
     @GetMapping("group/{groupId}/account/{accountId}")
-    @CheckPermission(resource = Resource.ACCOUNT, role = Role.VIEWER, groupIdFieldName = "groupId")
+    @CheckPermission(resource = Resource.ACCOUNT, role = Role.VIEWER, groupId = "#groupId")
     fun getAccountBalance(
         @PathVariable groupId: Long,
         @PathVariable accountId: Long,

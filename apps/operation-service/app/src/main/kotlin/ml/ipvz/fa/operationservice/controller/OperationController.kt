@@ -23,11 +23,12 @@ class OperationController(
 ) {
 
     @PostMapping
-    fun createOperation(@RequestBody operation: Mono<OperationEventDto>): Mono<OperationEventDto> =
+    @CheckPermission(resource = Resource.OPERATION, role = Role.EDITOR, groupId = "#operation.groupId")
+    fun createOperation(@RequestBody operation: OperationEventDto): Mono<OperationEventDto> =
         operationService.create(operation).map { it.toDto() }
 
     @GetMapping("group/{groupId}")
-    @CheckPermission(resource = Resource.OPERATION, role = Role.VIEWER, groupIdFieldName = "groupId")
+    @CheckPermission(resource = Resource.OPERATION, role = Role.VIEWER, groupId = "#groupId")
     fun getOperations(@PathVariable groupId: Long, @AuthenticationPrincipal user: User): Flux<OperationEventDto> =
         operationService.getAll(groupId).map { it.toDto() }
 }

@@ -33,8 +33,9 @@ Content-Type: application/json
 }
 
 ###
-POST {{operationService}}/operations
+POST {{apiUrl}}/api/operations
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 //{
 //  "groupId": 123,

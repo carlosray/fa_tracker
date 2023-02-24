@@ -57,6 +57,8 @@ config:
         uri: http://auth-service:80
       operation-service:
         uri: http://operation-service:80
+      group-service:
+        uri: http://group-service:80
     logging:
       level:
         ml.ipvz.fa.exchange.logging: DEBUG

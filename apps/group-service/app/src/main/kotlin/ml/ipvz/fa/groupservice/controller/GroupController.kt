@@ -28,7 +28,7 @@ class GroupController(
         )
 
     @GetMapping("{groupId}")
-    @CheckPermission(resource = Resource.GROUP, role = Role.VIEWER, groupIdFieldName = "groupId")
+    @CheckPermission(resource = Resource.GROUP, role = Role.VIEWER, groupId = "#groupId")
     fun getGroup(@PathVariable groupId: Long, @AuthenticationPrincipal user: User): Mono<GroupDto> =
         groupService.getGroupsByIds(setOf(groupId)).toMono()
 }

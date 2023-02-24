@@ -15,7 +15,7 @@ import java.time.Instant
 class OperationServiceImpl(private val operationRepository: OperationRepository) : OperationService {
     private val log by LoggerDelegate()
 
-    override fun create(operation: Mono<OperationEventDto>): Mono<OperationEntity> = operation
+    override fun create(operation: OperationEventDto): Mono<OperationEntity> = Mono.just(operation)
         .flatMap { if (it.id != null) Mono.error { IdMustBeNullException() } else Mono.just(it) }
         .map {
             OperationEntity(

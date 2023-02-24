@@ -15,4 +15,5 @@ client:
     uri: http://localhost:8002
   operation-service:
     uri: http://localhost:8005
-
+  group-service:
+    uri: http://localhost:8004
