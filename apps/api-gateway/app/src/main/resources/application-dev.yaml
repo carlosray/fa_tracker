@@ -17,3 +17,5 @@ client:
     uri: http://localhost:8005
   group-service:
     uri: http://localhost:8004
+  account-service:
+    uri: http://localhost:8007

@@ -4,5 +4,5 @@ import ml.ipvz.fa.accountservice.model.AccountDto
 import reactor.core.publisher.Mono
 
 interface AccountServiceClient {
-    fun getAccount(id: Long): Mono<AccountDto>
+    fun getAccount(groupId: Long, id: Long): Mono<AccountDto>
 }

@@ -5,6 +5,7 @@ import ml.ipvz.fa.userservice.client.UserServiceClient
 import ml.ipvz.fa.userservice.model.LoginDto
 import ml.ipvz.fa.userservice.model.UpdatePermissionsDto
 import ml.ipvz.fa.userservice.model.UserDto
+import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.MediaType
@@ -39,12 +40,12 @@ class UserServiceClientImpl(
                 .timeout(defaultTimeout)
         }
 
-    override fun updatePermissions(userId: Long, update: UpdatePermissionsDto): Mono<ResponseEntity<Void>> =
+    override fun updatePermissions(updates: List<UpdatePermissionsDto>): Mono<ResponseEntity<Void>> =
         TokenUtils.withAuthContextMono { auth ->
             userServiceClient.put()
-                .uri("/users/$userId/permissions")
+                .uri("users/permissions")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(update, UpdatePermissionsDto::class.java)
+                .body(updates, object : ParameterizedTypeReference<List<UpdatePermissionsDto>>() {})
                 .header(HttpHeaders.AUTHORIZATION, auth)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError) { response -> response.createError() }

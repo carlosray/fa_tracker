@@ -7,5 +7,6 @@ import reactor.core.publisher.Mono
 
 interface PermissionService {
     fun findByUser(userId: Long): Flux<Permission>
-    fun updatePermissions(userId: Long, update: UpdatePermissionsDto): Mono<Void>
+    fun updatePermissions(updates: List<UpdatePermissionsDto>): Mono<Void>
+    fun checkAll(permissions: Flux<Permission>): Mono<Void>
 }

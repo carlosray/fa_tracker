@@ -10,9 +10,9 @@ import reactor.core.publisher.Mono
 import java.time.Duration
 
 class AccountServiceClientImpl(private val accountServiceClient: WebClient) : AccountServiceClient {
-    override fun getAccount(id: Long): Mono<AccountDto> = TokenUtils.withAuthContextMono { auth ->
+    override fun getAccount(groupId: Long, id: Long): Mono<AccountDto> = TokenUtils.withAuthContextMono { auth ->
         accountServiceClient.get()
-            .uri("/accounts/$id")
+            .uri("/accounts/group/$groupId/$id")
             .header(HttpHeaders.AUTHORIZATION, auth)
             .retrieve()
             .onStatus(HttpStatusCode::isError) { response -> response.createError() }

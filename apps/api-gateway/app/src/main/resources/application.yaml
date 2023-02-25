@@ -83,6 +83,16 @@ spring:
             - StripPrefix=1
             - Auth
 
+        #account
+        - id: account_get_all
+          uri: ${client.account-service.uri}
+          predicates:
+            - Path=/api/accounts/group/**
+            - Method=GET
+          filters:
+            - StripPrefix=1
+            - Auth
+
 client:
   auth-service:
     uri: http://localhost
@@ -91,6 +101,8 @@ client:
   operation-service:
     uri: http://localhost
   group-service:
+    uri: http://localhost
+  account-service:
     uri: http://localhost
 
 management:

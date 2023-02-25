@@ -5,12 +5,15 @@ import ml.ipvz.fa.authservice.base.permission.Permission
 import ml.ipvz.fa.authservice.base.service.PermissionChecker
 import ml.ipvz.fa.userservice.logging.LoggerDelegate
 import ml.ipvz.fa.userservice.model.UpdatePermissionsDto
+import ml.ipvz.fa.userservice.model.UpdatePermissionsDto.Action.ADD
+import ml.ipvz.fa.userservice.model.UpdatePermissionsDto.Action.DELETE
 import ml.ipvz.fa.userservice.model.entity.RoleEntity
 import ml.ipvz.fa.userservice.repository.RoleRepository
 import ml.ipvz.fa.userservice.service.PermissionService
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.toFlux
 
 @Service
 class PermissionServiceImpl(
@@ -23,33 +26,18 @@ class PermissionServiceImpl(
         roleRepository.findByUserId(userId)
             .map { Permission.fromString(it.permission) }
 
-    override fun updatePermissions(userId: Long, update: UpdatePermissionsDto): Mono<Void> =
-        checkCurrentUserHasPermissionsToManageRoles(update)
-            .then(update(userId, update))
+    override fun updatePermissions(updates: List<UpdatePermissionsDto>): Mono<Void> =
+        updates.toFlux().flatMap {
+            when (it.action) {
+                ADD -> roleRepository.save(RoleEntity(userId = it.userId, permission = it.toString()))
+                    .doOnNext { e -> log.info("Given permission ${e.permission} to user ${e.userId}") }
 
-    private fun update(userId: Long, update: UpdatePermissionsDto): Mono<Void> {
-        var result: Flux<Any> = Flux.empty()
-        if (update.delete.isNotEmpty()) {
-            result = result.concatWith(
-                roleRepository.deleteByUserIdAndPermissionIn(
-                    userId,
-                    update.delete.map { it.toString() })
-            )
-        }
+                DELETE -> roleRepository.deleteByUserIdAndPermission(it.userId, it.permission.toString())
+            }
+        }.then()
 
-        if (update.add.isNotEmpty()) {
-            val roleEntities = update.add.map { RoleEntity(userId = userId, permission = it.toString()) }
-            result = result.concatWith(roleRepository.saveAll(roleEntities)
-                .doOnNext { log.info("Given permission ${it.permission} to user ${it.userId}") }
-            )
-        }
-
-        return result.then()
-    }
-
-    private fun checkCurrentUserHasPermissionsToManageRoles(update: UpdatePermissionsDto): Mono<Permission> =
-        Flux.fromIterable(update.add).concatWith(Flux.fromIterable(update.delete))
-            .filterWhen { permissionChecker.check(it).map { b -> !b } }
+    override fun checkAll(permissions: Flux<Permission>): Mono<Void> =
+        permissions.filterWhen { permissionChecker.check(it).map { b -> !b } }
             .next()
             .flatMap { Mono.error { AccessForbiddenException(it) } }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @RestController
@@ -20,5 +21,10 @@ class AccountController(
     @GetMapping("group/{groupId}/{accountId}")
     @CheckPermission(resource = Resource.ACCOUNT, role = Role.VIEWER, groupId = "#groupId")
     fun getAccount(@PathVariable groupId: Long, @PathVariable accountId: Long): Mono<AccountDto> =
-        accountService.getAccount(groupId, accountId).map { it.toDto() }
+        accountService.getAccount(groupId, accountId)
+
+    @GetMapping("group/{groupId}")
+    @CheckPermission(resource = Resource.ACCOUNT, role = Role.VIEWER, groupId = "#groupId")
+    fun getAccounts(@PathVariable groupId: Long): Flux<AccountDto> =
+        accountService.getAccounts(groupId)
 }

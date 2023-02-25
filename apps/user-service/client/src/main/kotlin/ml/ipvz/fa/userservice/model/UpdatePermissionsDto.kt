@@ -3,6 +3,13 @@ package ml.ipvz.fa.userservice.model
 import ml.ipvz.fa.authservice.base.permission.Permission
 
 data class UpdatePermissionsDto(
-    val add: Set<Permission> = setOf(),
-    val delete: Set<Permission> = setOf()
-)
+    val permission: Permission,
+    val action: Action,
+    val userId: Long
+) {
+
+    enum class Action {
+        ADD, DELETE
+    }
+}
+

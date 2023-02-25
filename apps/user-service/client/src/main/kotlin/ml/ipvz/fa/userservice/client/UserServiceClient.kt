@@ -9,5 +9,5 @@ import reactor.core.publisher.Mono
 interface UserServiceClient {
     fun login(loginDto: Mono<LoginDto>): Mono<UserDto>
     fun getUser(id: Long): Mono<UserDto>
-    fun updatePermissions(userId: Long, update: UpdatePermissionsDto): Mono<ResponseEntity<Void>>
+    fun updatePermissions(updates: List<UpdatePermissionsDto>): Mono<ResponseEntity<Void>>
 }
