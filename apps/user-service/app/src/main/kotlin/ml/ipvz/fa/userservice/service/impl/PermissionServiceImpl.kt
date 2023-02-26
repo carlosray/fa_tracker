@@ -29,7 +29,7 @@ class PermissionServiceImpl(
     override fun updatePermissions(updates: List<UpdatePermissionsDto>): Mono<Void> =
         updates.toFlux().flatMap {
             when (it.action) {
-                ADD -> roleRepository.save(RoleEntity(userId = it.userId, permission = it.toString()))
+                ADD -> roleRepository.save(RoleEntity(userId = it.userId, permission = it.permission.toString()))
                     .doOnNext { e -> log.info("Given permission ${e.permission} to user ${e.userId}") }
 
                 DELETE -> roleRepository.deleteByUserIdAndPermission(it.userId, it.permission.toString())

@@ -26,8 +26,8 @@ public final class Permission {
         if (parts.length != 3) {
             throw new IllegalArgumentException("permission invalid: " + permission);
         }
-        Resource resource = Resource.valueOf(parts[0]);
-        Long groupId = Long.parseLong(parts[1]);
+        Long groupId = Long.parseLong(parts[0]);
+        Resource resource = Resource.valueOf(parts[1]);
         Role role = Role.valueOf(parts[2]);
 
         return new Permission(resource, groupId, role);

@@ -9,4 +9,5 @@ import reactor.core.publisher.Mono
 interface GroupService {
     fun getGroupsByIds(ids: Set<Long>): Flux<GroupDto>
     fun createGroup(dto: GroupCreateDto, owner: User): Mono<GroupDto>
+    fun deleteGroup(long: Long): Mono<Void>
 }

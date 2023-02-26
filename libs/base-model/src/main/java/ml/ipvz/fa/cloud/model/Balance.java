@@ -8,4 +8,7 @@ public record Balance(
         Currency currency,
         Instant lastUpdate
 ) {
+    public static Balance empty(Currency currency) {
+        return new Balance(BigDecimal.ZERO, currency, Instant.now());
+    }
 }

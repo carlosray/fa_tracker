@@ -3,6 +3,7 @@ package ml.ipvz.fa.groupservice.service.impl
 import ml.ipvz.fa.authservice.base.model.User
 import ml.ipvz.fa.authservice.base.permission.Permission
 import ml.ipvz.fa.balanceservice.client.BalanceServiceClient
+import ml.ipvz.fa.balanceservice.model.BalanceDto
 import ml.ipvz.fa.cloud.model.Balance
 import ml.ipvz.fa.groupservice.model.GroupCreateDto
 import ml.ipvz.fa.groupservice.model.GroupDto
@@ -13,6 +14,7 @@ import ml.ipvz.fa.groupservice.service.GroupService
 import ml.ipvz.fa.userservice.client.UserServiceClient
 import ml.ipvz.fa.userservice.model.UpdatePermissionsDto
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.math.BigDecimal
@@ -30,8 +32,10 @@ class GroupServiceImpl(
 
     private fun withBalance(entity: GroupEntity): Mono<GroupDto> =
         balanceServiceClient.getGroupBalance(entity.id!!, entity.config.currency)
+            .defaultIfEmpty(BalanceDto(entity.id, Balance.empty(entity.config.currency)))
             .map { GroupDto(entity.id, entity.name, entity.description, it.balance) }
 
+    @Transactional
     override fun createGroup(dto: GroupCreateDto, owner: User): Mono<GroupDto> {
         val entity = GroupEntity(
             name = dto.name,
@@ -53,4 +57,6 @@ class GroupServiceImpl(
             userServiceClient.updatePermissions(listOf(update)).thenReturn(group)
         }
     }
+
+    override fun deleteGroup(long: Long): Mono<Void> = groupRepository.deleteById(long)
 }

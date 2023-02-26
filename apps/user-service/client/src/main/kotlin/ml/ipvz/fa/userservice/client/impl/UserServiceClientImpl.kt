@@ -45,7 +45,7 @@ class UserServiceClientImpl(
             userServiceClient.put()
                 .uri("users/permissions")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(updates, object : ParameterizedTypeReference<List<UpdatePermissionsDto>>() {})
+                .bodyValue(updates)
                 .header(HttpHeaders.AUTHORIZATION, auth)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError) { response -> response.createError() }

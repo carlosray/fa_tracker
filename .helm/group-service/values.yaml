@@ -32,7 +32,9 @@ config:
       internal-key: <FILL>
     client:
       balance-service:
-        uri: http://balance-service:8008
+        uri: http://balance-service:80
+      user-service:
+        uri: http://user-service:80
     logging:
       level:
         ml.ipvz.fa.exchange.logging: DEBUG

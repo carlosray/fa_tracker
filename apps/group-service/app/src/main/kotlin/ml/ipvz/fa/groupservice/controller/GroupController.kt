@@ -8,6 +8,7 @@ import ml.ipvz.fa.groupservice.model.GroupCreateDto
 import ml.ipvz.fa.groupservice.model.GroupDto
 import ml.ipvz.fa.groupservice.service.GroupService
 import org.springframework.security.core.annotation.AuthenticationPrincipal
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -38,4 +39,8 @@ class GroupController(
     @PostMapping
     fun createGroup(@RequestBody group: GroupCreateDto, @AuthenticationPrincipal user: User): Mono<GroupDto> =
         groupService.createGroup(group, user)
+
+    @DeleteMapping("{groupId}")
+    @CheckPermission(resource = Resource.GROUP, role = Role.ADMIN, groupId = "#groupId")
+    fun deleteGroup(@PathVariable groupId: Long): Mono<Void> = groupService.deleteGroup(groupId)
 }

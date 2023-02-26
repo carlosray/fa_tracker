@@ -83,6 +83,15 @@ spring:
             - StripPrefix=1
             - Auth
 
+        - id: groups_delete
+          uri: ${client.group-service.uri}
+          predicates:
+            - Path=/api/groups/**
+            - Method=DELETE
+          filters:
+            - StripPrefix=1
+            - Auth
+
         #account
         - id: account_get_all
           uri: ${client.account-service.uri}

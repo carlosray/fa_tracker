@@ -6,6 +6,8 @@ import ml.ipvz.fa.accountservice.model.entity.AccountEntity
 import ml.ipvz.fa.accountservice.repository.AccountRepository
 import ml.ipvz.fa.accountservice.service.AccountService
 import ml.ipvz.fa.balanceservice.client.BalanceServiceClient
+import ml.ipvz.fa.balanceservice.model.BalanceDto
+import ml.ipvz.fa.cloud.model.Balance
 import org.springframework.stereotype.Service
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
@@ -26,5 +28,6 @@ class AccountServiceImpl(
 
     private fun withBalance(entity: AccountEntity): Mono<AccountDto> =
         balanceServiceClient.getAccountBalance(entity.groupId, entity.id!!, entity.config.currency)
+            .defaultIfEmpty(BalanceDto(entity.id, Balance.empty(entity.config.currency)))
             .map { AccountDto(entity.id, entity.groupId, entity.name, it.balance) }
 }

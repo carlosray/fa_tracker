@@ -12,6 +12,7 @@
     <property name="default_user" value="current_user" dbms="postgresql"/>
 
     <include file="/db/migrations/2023/01/02.sql"/>
+    <include file="/db/migrations/2023/02/24.sql"/>
 
 
 </databaseChangeLog>
