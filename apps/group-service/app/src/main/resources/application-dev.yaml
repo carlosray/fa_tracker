@@ -18,9 +18,12 @@ logging:
   level:
     io.r2dbc.postgresql.QUERY: DEBUG # for queries
     io.r2dbc.postgresql.PARAM: DEBUG # for parameters
+    ml.ipvz.fa: DEBUG
 
 spring:
   r2dbc:
     properties:
       ssl: false
       sslMode: disable
+  kafka:
+    server: localhost:9092

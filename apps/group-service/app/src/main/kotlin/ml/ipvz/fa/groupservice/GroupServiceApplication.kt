@@ -1,6 +1,7 @@
 package ml.ipvz.fa.groupservice
 
 import ml.ipvz.fa.balanceservice.config.BalanceClientConfiguration
+import ml.ipvz.fa.cloud.async.config.KafkaConfiguration
 import ml.ipvz.fa.error.handling.handler.BaseApiExceptionHandler
 import ml.ipvz.fa.exchange.logging.LoggingWebFilter
 import ml.ipvz.fa.groupservice.config.GroupClientConfiguration
@@ -21,6 +22,7 @@ import org.springframework.context.annotation.Import
 @Import(
     LoggingWebFilter::class,
     BaseApiExceptionHandler::class,
+    KafkaConfiguration::class,
     BalanceClientConfiguration::class,
     UserClientConfiguration::class
 )
