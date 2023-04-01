@@ -10,4 +10,5 @@ interface UserService {
     fun login(auth: LoginDto): Mono<UserEntity>
     fun register(register: RegisterDto): Mono<UserEntity>
     fun getAll(): Flux<UserEntity>
+    fun get(id: Long): Mono<UserEntity>
 }

@@ -9,7 +9,9 @@ data class UpdatePermissionsDto(
 ) {
 
     enum class Action {
-        ADD, DELETE
+        GRANT, DELETE;
+
+        fun isGrant(): Boolean = this == GRANT
     }
 }
 

@@ -1,16 +1,17 @@
 package ml.ipvz.fa.userservice.client.impl
 
+import ml.ipvz.fa.authservice.base.permission.Permission
 import ml.ipvz.fa.authservice.base.util.TokenUtils
 import ml.ipvz.fa.userservice.client.UserServiceClient
 import ml.ipvz.fa.userservice.model.LoginDto
 import ml.ipvz.fa.userservice.model.UpdatePermissionsDto
 import ml.ipvz.fa.userservice.model.UserDto
-import org.springframework.core.ParameterizedTypeReference
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.reactive.function.client.WebClient
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import java.time.Duration
 
@@ -52,4 +53,11 @@ class UserServiceClientImpl(
                 .toBodilessEntity()
                 .timeout(defaultTimeout)
         }
+
+    override fun getPermissions(userId: Long): Flux<Permission> = userServiceClient.get()
+        .uri("/users/permissions/$userId")
+        .retrieve()
+        .onStatus(HttpStatusCode::isError) { response -> response.createError() }
+        .bodyToFlux(Permission::class.java)
+        .timeout(defaultTimeout)
 }

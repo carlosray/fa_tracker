@@ -14,4 +14,8 @@ public record User(
     public List<Permission> getPermissions() {
         return roles().stream().map(Permission::fromString).toList();
     }
+
+    public User withPermissions(List<Permission> permissions) {
+        return new User(this.id, this.login, permissions.stream().map(Permission::toString).toList());
+    }
 }

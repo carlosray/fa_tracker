@@ -1,6 +1,7 @@
 package ml.ipvz.fa.authservice;
 
 import ml.ipvz.fa.authservice.config.AuthClientConfiguration;
+import ml.ipvz.fa.cloud.async.config.KafkaConfiguration;
 import ml.ipvz.fa.error.handling.handler.BaseApiExceptionHandler;
 import ml.ipvz.fa.exchange.logging.LoggingWebFilter;
 import ml.ipvz.fa.userservice.config.UserClientConfiguration;
@@ -15,7 +16,7 @@ import org.springframework.context.annotation.Import;
 @ComponentScan(excludeFilters = {
         @Filter(type = FilterType.ASSIGNABLE_TYPE, classes = AuthClientConfiguration.class)
 })
-@Import({LoggingWebFilter.class, BaseApiExceptionHandler.class, UserClientConfiguration.class})
+@Import({LoggingWebFilter.class, BaseApiExceptionHandler.class, UserClientConfiguration.class, KafkaConfiguration.class})
 public class AuthServiceApplication {
 
     public static void main(String[] args) {

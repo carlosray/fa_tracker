@@ -29,6 +29,16 @@
             <artifactId>exchange-logging</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>ml.ipvz.fa</groupId>
+            <artifactId>base-async</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>ml.ipvz.fa</groupId>
+            <artifactId>caching</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <dependency>
             <groupId>ml.ipvz.fa</groupId>
@@ -68,7 +78,6 @@
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>

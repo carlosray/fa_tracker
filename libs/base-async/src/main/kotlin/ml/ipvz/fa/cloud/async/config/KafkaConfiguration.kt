@@ -1,8 +1,8 @@
 package ml.ipvz.fa.cloud.async.config
 
-import ml.ipvz.fa.cloud.async.model.Event
-import ml.ipvz.fa.cloud.async.service.EventServiceFactory
-import ml.ipvz.fa.cloud.async.service.EventServiceFactoryImpl
+import ml.ipvz.fa.cloud.async.model.EventEntity
+import ml.ipvz.fa.cloud.async.service.EventService
+import ml.ipvz.fa.cloud.async.service.EventServiceImpl
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -27,7 +27,7 @@ class KafkaConfiguration {
     private lateinit var groupId: String
 
     @Bean
-    fun receiverOptions(): ReceiverOptions<String, Event> = ReceiverOptions.create(consumerProps())
+    fun receiverOptions(): ReceiverOptions<String, EventEntity> = ReceiverOptions.create(consumerProps())
 
     private fun consumerProps(): Map<String, Any> = mapOf(
         ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG to bootstrapServers,
@@ -39,8 +39,8 @@ class KafkaConfiguration {
     )
 
     @Bean(destroyMethod = "close")
-    fun kafkaSender(): KafkaSender<String, Event> {
-        val senderOptions = SenderOptions.create<String, Event>(senderProps())
+    fun kafkaSender(): KafkaSender<String, EventEntity> {
+        val senderOptions = SenderOptions.create<String, EventEntity>(senderProps())
             .maxInFlight(1024)
         return KafkaSender.create(senderOptions)
     }
@@ -54,7 +54,7 @@ class KafkaConfiguration {
 
     @Bean
     fun eventService(
-        receiverOptions: ReceiverOptions<String, Event>,
-        sender: KafkaSender<String, Event>
-    ): EventServiceFactory = EventServiceFactoryImpl(sender, receiverOptions)
+        receiverOptions: ReceiverOptions<String, EventEntity>,
+        sender: KafkaSender<String, EventEntity>
+    ): EventService = EventServiceImpl(sender, receiverOptions)
 }

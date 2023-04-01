@@ -43,4 +43,6 @@ class UserServiceImpl(
     }
 
     override fun getAll(): Flux<UserEntity> = userRepository.findAll()
+
+    override fun get(id: Long): Mono<UserEntity> = userRepository.findById(id)
 }

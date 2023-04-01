@@ -7,6 +7,7 @@ import ml.ipvz.fa.userservice.model.UserDto
 import ml.ipvz.fa.userservice.service.PermissionService
 import ml.ipvz.fa.userservice.service.UserService
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -35,4 +36,7 @@ class UserController(
 
     @GetMapping
     fun getAll(): Flux<UserDto> = userService.getAll().map { it.toDto() }
+
+    @GetMapping("{id}")
+    fun get(@PathVariable id: Long): Mono<UserDto> = userService.get(id).map { it.toDto() }
 }

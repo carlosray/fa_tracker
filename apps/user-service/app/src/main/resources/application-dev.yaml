@@ -22,3 +22,5 @@ spring:
     properties:
       ssl: false
       sslMode: disable
+  kafka:
+    server: localhost:9092

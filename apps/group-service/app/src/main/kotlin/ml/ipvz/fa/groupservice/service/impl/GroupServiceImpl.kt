@@ -52,7 +52,7 @@ class GroupServiceImpl(
             )
         }.flatMap { group ->
             val permission = Permission.builder(group.id).group().admin()
-            val update = UpdatePermissionsDto(permission, UpdatePermissionsDto.Action.ADD, owner.id)
+            val update = UpdatePermissionsDto(permission, UpdatePermissionsDto.Action.GRANT, owner.id)
 
             userServiceClient.updatePermissions(listOf(update)).thenReturn(group)
         }

@@ -38,6 +38,10 @@ config:
     logging:
       level:
         ml.ipvz.fa.exchange.logging: DEBUG
+    spring:
+      kafka:
+        server: kafka-common-kafka-bootstrap:9092
+
 
 secret:
   mountPath: /etc/secret

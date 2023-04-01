@@ -21,6 +21,7 @@ import ml.ipvz.fa.authservice.model.token.Token;
 import ml.ipvz.fa.authservice.repository.AuthClientRepository;
 import ml.ipvz.fa.authservice.service.AccessTokenService;
 import ml.ipvz.fa.authservice.service.AuthenticationService;
+import ml.ipvz.fa.authservice.service.CacheService;
 import ml.ipvz.fa.authservice.service.RefreshTokenService;
 import ml.ipvz.fa.userservice.client.UserServiceClient;
 import ml.ipvz.fa.userservice.model.LoginDto;
@@ -37,6 +38,7 @@ public class JwtAuthenticationService implements AuthenticationService {
     private final AccessTokenService accessTokenService;
     private final RefreshTokenService refreshTokenService;
     private final AuthClientRepository clientRepository;
+    private final CacheService cacheService;
     private final Clock clock;
 
     @Override
@@ -78,7 +80,7 @@ public class JwtAuthenticationService implements AuthenticationService {
     public Mono<AccessRefreshToken> refresh(Mono<AccessRefreshToken> accessRefreshToken) {
         return accessRefreshToken.flatMap(a ->
                 parseExternalToken(a.accessToken())
-                        .map(r -> r.user)
+                        .flatMap(r -> withUpdatedPermissions(r.user))
                         .zipWhen(u -> findClient(String.valueOf(u.id())))
                         .doOnNext(t -> validateRefreshToken(a.refreshToken(), t.getT2()))
                         .flatMap(t -> generateTokenPair(t.getT1())));
@@ -98,13 +100,17 @@ public class JwtAuthenticationService implements AuthenticationService {
                 .onErrorResume(ExpiredJwtException.class, (e) -> Mono.just(new ParseTokenResult(e.getClaims(), e)));
     }
 
+    private Mono<User> withUpdatedPermissions(User user) {
+        return cacheService.getUserPermissions(user.id()).map(user::withPermissions);
+    }
+
     @Override
     public Mono<AccessToken> check(Mono<Token> token) {
         return token.flatMap(t -> parseExternalToken(t.getAccessToken()))
                 .flatMap(r -> r.error
                         .<Mono<ParseTokenResult>>map(throwable -> Mono.error(new AccessTokenExpiredException(throwable)))
                         .orElseGet(() -> Mono.just(r)))
-                .map(r -> r.user)
+                .flatMap(r -> withUpdatedPermissions(r.user))
                 .flatMap(this::generateInternalAccessToken)
                 .map(AccessToken::new);
     }
