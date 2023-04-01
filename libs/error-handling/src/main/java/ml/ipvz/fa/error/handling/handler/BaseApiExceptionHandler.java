@@ -37,15 +37,21 @@ public class BaseApiExceptionHandler extends ResponseStatusExceptionHandler {
         HttpStatus status = Optional.ofNullable(AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class))
                 .map(ResponseStatus::code)
                 .orElse(HttpStatus.INTERNAL_SERVER_ERROR);
-        return Mono.just(ResponseEntity.status(status).body(new ErrorDto(status.value(), e.getMessage(),
-                Instant.now())));
+        ErrorDto errorDto = new ErrorDto(status.value(), e.getMessage(), Instant.now());
+        return Mono.just(ResponseEntity.status(status).body(errorDto));
     }
 
     @ExceptionHandler(WebClientResponseException.class)
     public Mono<ResponseEntity<ErrorDto>> handleClientError(WebClientResponseException ex) {
         String path = Optional.ofNullable(ex.getRequest()).map(r -> r.getURI().getPath()).orElse("");
         log.error("Error from client call " + path, ex);
-        ErrorDto errorDto = ex.getResponseBodyAs(ErrorDto.class);
+        ErrorDto errorDto;
+        try {
+            errorDto = ex.getResponseBodyAs(ErrorDto.class);
+        } catch (Exception e) {
+            log.debug("Error while parsing errorDto from client call", e);
+            errorDto = new ErrorDto(ex.getStatusCode().value(), ex.getMessage(), Instant.now());
+        }
         return Mono.just(ResponseEntity.status(ex.getStatusCode()).body(errorDto));
     }
 

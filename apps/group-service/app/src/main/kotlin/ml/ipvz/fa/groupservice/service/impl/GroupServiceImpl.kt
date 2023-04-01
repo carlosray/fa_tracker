@@ -1,5 +1,7 @@
 package ml.ipvz.fa.groupservice.service.impl
 
+import ml.ipvz.fa.async.model.event.GroupDeletedEvent
+import ml.ipvz.fa.async.service.send
 import ml.ipvz.fa.authservice.base.model.User
 import ml.ipvz.fa.authservice.base.permission.Permission
 import ml.ipvz.fa.balanceservice.client.BalanceServiceClient
@@ -58,5 +60,6 @@ class GroupServiceImpl(
         }
     }
 
-    override fun deleteGroup(long: Long): Mono<Void> = groupRepository.deleteById(long)
+    override fun deleteGroup(id: Long): Mono<Void> = groupRepository.deleteById(id)
+        .then(GroupDeletedEvent(id, Instant.now()).send())
 }

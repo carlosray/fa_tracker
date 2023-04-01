@@ -1,22 +1,21 @@
-package ml.ipvz.fa.cloud.async.service
+package ml.ipvz.fa.async.service
 
-import ml.ipvz.fa.cloud.async.model.Event
-import ml.ipvz.fa.cloud.async.model.EventEntity
-import ml.ipvz.fa.cloud.async.model.event.GroupCreatedEvent
-import ml.ipvz.fa.cloud.async.model.event.PermissionUpdatedEvent
+import ml.ipvz.fa.async.model.Event
+import ml.ipvz.fa.async.model.EventEntity
+import ml.ipvz.fa.async.model.event.GroupDeletedEvent
+import ml.ipvz.fa.async.model.event.PermissionUpdatedEvent
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 abstract class AbstractEventService : EventService {
     override val group = object : EventService.Group {
-        override val created = buildEvent<GroupCreatedEvent>()
+        override val deleted = buildEvent<GroupDeletedEvent>()
     }
     override val user = object : EventService.User {
         override val permissionUpdated = buildEvent<PermissionUpdatedEvent>()
     }
     override val account = object : EventService.Account {}
     override val category = object : EventService.Category {}
-
 
     private inline fun <reified E : EventEntity> buildEvent(inputTopic: String? = null): Event<E> {
         val className = E::class.simpleName

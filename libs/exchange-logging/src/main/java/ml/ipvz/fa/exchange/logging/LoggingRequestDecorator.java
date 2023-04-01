@@ -31,7 +31,7 @@ public class LoggingRequestDecorator extends ServerHttpRequestDecorator {
                             request.getMethod(),
                             request.getURI(),
                             request.getHeaders(),
-                            bodyStream
+                            bodyStream.size() > 0 ? bodyStream.toString() : ""
                     ));
                 } catch (IOException e) {
                     throw new RuntimeException(e);

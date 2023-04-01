@@ -19,12 +19,15 @@ logging:
     io.netty.handler.proxy.ProxyHandler: DEBUG
     org.springframework.web.reactive.function.client: DEBUG
     reactor.ipc.netty.channel: DEBUG
+    ml.ipvz.fa: DEBUG
 
 spring:
   r2dbc:
     properties:
       ssl: false
       sslMode: disable
+  kafka:
+    server: localhost:9092
 
 token:
   external-key: "26042bww9u59bm5anbxwiv3ozjn8lp"

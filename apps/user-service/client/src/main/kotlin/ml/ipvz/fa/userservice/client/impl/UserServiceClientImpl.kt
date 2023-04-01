@@ -54,10 +54,14 @@ class UserServiceClientImpl(
                 .timeout(defaultTimeout)
         }
 
-    override fun getPermissions(userId: Long): Flux<Permission> = userServiceClient.get()
-        .uri("/users/permissions/$userId")
-        .retrieve()
-        .onStatus(HttpStatusCode::isError) { response -> response.createError() }
-        .bodyToFlux(Permission::class.java)
-        .timeout(defaultTimeout)
+    override fun getPermissions(userId: Long): Flux<Permission> =
+        TokenUtils.withAuthContextFlux { auth ->
+            userServiceClient.get()
+                .uri("/users/permissions/$userId")
+                .header(HttpHeaders.AUTHORIZATION, auth)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError) { response -> response.createError() }
+                .bodyToFlux(Permission::class.java)
+                .timeout(defaultTimeout)
+        }
 }

@@ -1,8 +1,8 @@
-package ml.ipvz.fa.cloud.async.service
+package ml.ipvz.fa.async.service
 
-import ml.ipvz.fa.cloud.async.model.EventEntity
+import ml.ipvz.fa.async.logging.LoggerDelegate
+import ml.ipvz.fa.async.model.EventEntity
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.slf4j.LoggerFactory
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.kafka.receiver.KafkaReceiver
@@ -16,10 +16,7 @@ class EventServiceImpl(
     private val kafkaSender: KafkaSender<String, EventEntity>,
     private val receiverOptions: ReceiverOptions<String, EventEntity>
 ) : AbstractEventService() {
-
-    companion object {
-        private val log = LoggerFactory.getLogger(EventServiceImpl::class.java)
-    }
+    private val log by LoggerDelegate()
 
     override fun <E : EventEntity> send(event: E, topic: String): Mono<Void> {
         val record = ProducerRecord<String, EventEntity>(topic, event.eventKey, event)

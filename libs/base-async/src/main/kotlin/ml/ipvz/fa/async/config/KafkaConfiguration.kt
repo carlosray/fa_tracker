@@ -1,8 +1,9 @@
-package ml.ipvz.fa.cloud.async.config
+package ml.ipvz.fa.async.config
 
-import ml.ipvz.fa.cloud.async.model.EventEntity
-import ml.ipvz.fa.cloud.async.service.EventService
-import ml.ipvz.fa.cloud.async.service.EventServiceImpl
+import ml.ipvz.fa.async.model.EventEntity
+import ml.ipvz.fa.async.service.EventService
+import ml.ipvz.fa.async.service.EventServiceImpl
+import ml.ipvz.fa.async.util.ContextUtils
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.producer.ProducerConfig
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -57,4 +58,7 @@ class KafkaConfiguration {
         receiverOptions: ReceiverOptions<String, EventEntity>,
         sender: KafkaSender<String, EventEntity>
     ): EventService = EventServiceImpl(sender, receiverOptions)
+
+    @Bean
+    fun contextUtils() = ContextUtils()
 }

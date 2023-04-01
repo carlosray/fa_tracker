@@ -1,4 +1,4 @@
-package ml.ipvz.fa.cloud.async.model
+package ml.ipvz.fa.async.model
 
 interface EventEntity {
     val eventKey: String

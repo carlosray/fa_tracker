@@ -31,7 +31,7 @@ public class LogUtils {
                                                HttpMethod method,
                                                URI uri,
                                                HttpHeaders headers,
-                                               Object body) {
+                                               String body) {
         HttpHeaders headersToLog = HttpHeaders.writableHttpHeaders(headers);
         for (String header : FORBIDDEN_HEADERS) {
             headersToLog.replace(header, List.of("*****"));
@@ -41,12 +41,12 @@ public class LogUtils {
                 method,
                 uri.getPath() + (org.springframework.util.StringUtils.hasText(uri.getQuery()) ? "?$query" : ""),
                 headers,
-                cleanUpBodyString(body.toString())
+                cleanUpBodyString(body)
         );
     }
 
     private static String cleanUpBodyString(String body) {
-        String bodyToLog = StringUtils.normalizeSpace(StringUtils.remove(body.toString(), System.lineSeparator()));
+        String bodyToLog = StringUtils.normalizeSpace(StringUtils.remove(body, System.lineSeparator()));
 
         for (String word : FORBIDDEN_BODY_WORDS) {
             if (bodyToLog.contains(word)) {

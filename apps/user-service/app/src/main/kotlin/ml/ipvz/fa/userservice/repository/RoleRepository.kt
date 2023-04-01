@@ -10,4 +10,5 @@ import reactor.core.publisher.Mono
 interface RoleRepository : R2dbcRepository<RoleEntity, Long> {
     fun findByUserId(userId: Long): Flux<RoleEntity>
     fun deleteByUserIdAndPermission(userId: Long, permission: String): Mono<Void>
+    fun deleteAllByPermissionStartsWith(permissionPrefix: String): Mono<Void>
 }
