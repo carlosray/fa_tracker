@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>ml.ipvz.fa</groupId>
+        <groupId>space.ipvz.fa</groupId>
         <artifactId>apps</artifactId>
         <version>1.0.0</version>
     </parent>
@@ -22,7 +22,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>ml.ipvz.fa</groupId>
+            <groupId>space.ipvz.fa</groupId>
             <artifactId>base-auth</artifactId>
             <version>1.0.0</version>
         </dependency>

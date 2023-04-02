@@ -10,7 +10,7 @@
         <version>3.0.2</version>
     </parent>
 
-    <groupId>ml.ipvz.fa</groupId>
+    <groupId>space.ipvz.fa</groupId>
     <artifactId>finance-tracker</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>

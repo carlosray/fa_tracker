@@ -37,7 +37,7 @@ config:
         uri: http://user-service:80
     logging:
       level:
-        ml.ipvz.fa.exchange.logging: DEBUG
+        space.ipvz.fa.exchange.logging: DEBUG
     spring:
       kafka:
         server: kafka-common-kafka-bootstrap:9092

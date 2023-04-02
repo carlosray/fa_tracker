@@ -7,7 +7,7 @@ db:
 
 logging:
   level:
-    ml.ipvz.fa.exchange.logging: DEBUG
+    space.ipvz.fa.exchange.logging: DEBUG
     io.r2dbc.postgresql.QUERY: DEBUG # for queries
     io.r2dbc.postgresql.PARAM: DEBUG # for parameters
     reactor.ipc.netty.channel.ChannelOperationsHandler: DEBUG
@@ -19,7 +19,7 @@ logging:
     io.netty.handler.proxy.ProxyHandler: DEBUG
     org.springframework.web.reactive.function.client: DEBUG
     reactor.ipc.netty.channel: DEBUG
-    ml.ipvz.fa: DEBUG
+    space.ipvz.fa: DEBUG
 
 spring:
   r2dbc:

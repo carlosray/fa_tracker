@@ -30,7 +30,7 @@ config:
       password: <FILL>
     logging:
       level:
-        ml.ipvz.fa.exchange.logging: DEBUG
+        space.ipvz.fa.exchange.logging: DEBUG
     token:
       external-key: <FILL>
       internal-key: <FILL>

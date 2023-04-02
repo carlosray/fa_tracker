@@ -1,0 +1,3 @@
+package space.ipvz.fa.operationservice.client
+
+interface OperationServiceClient

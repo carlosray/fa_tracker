@@ -16,17 +16,17 @@ service:
 ingress:
   enabled: true
   hosts:
-    - host: fa.ipvz.ml
+    - host: fa.ipvz.space
       paths:
         - path: /api
           pathType: Prefix
   tls:
     - hosts:
-      - fa.ipvz.ml
+      - fa.ipvz.space
 
 yc:
   authorizedKey: <FILL>
-  certId: <FILL>
+  certId: fpqdoqijs939pqhbsaql
 
 env:
   - name: SPRING_PROFILES_ACTIVE
@@ -43,7 +43,7 @@ config:
           globalcors:
             cors-configurations:
               '[/**]':
-                allowedOrigins: "https://fa.ipvz.ml"
+                allowedOrigins: "https://fa.ipvz.space"
                 allowedHeaders: "*"
                 allowedMethods:
                   - GET
@@ -63,7 +63,7 @@ config:
         uri: http://account-service:80
     logging:
       level:
-        ml.ipvz.fa.exchange.logging: DEBUG
+        space.ipvz.fa.exchange.logging: DEBUG
 
 
 secret:

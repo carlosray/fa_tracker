@@ -35,7 +35,7 @@ config:
         uri: http://balance-service:80
     logging:
       level:
-        ml.ipvz.fa.exchange.logging: DEBUG
+        space.ipvz.fa.exchange.logging: DEBUG
 
 secret:
   mountPath: /etc/secret
