@@ -17,3 +17,5 @@ token:
 client:
   balance-service:
     uri: http://localhost:8008
+  user-service:
+    uri: http://localhost:8006
