@@ -42,7 +42,7 @@ config:
         uri: http://user-service:80
     spring:
       kafka:
-        server: kafka-common-kafka-bootstrap:9092
+        server: kafka-common-kafka-bootstrap.kafka:9092
 
 
 secret:

@@ -38,7 +38,7 @@ config:
         space.ipvz.fa.exchange.logging: DEBUG
     spring:
       kafka:
-        server: kafka-common-kafka-bootstrap:9092
+        server: kafka-common-kafka-bootstrap.kafka:9092
 
 secret:
   mountPath: /etc/secret
