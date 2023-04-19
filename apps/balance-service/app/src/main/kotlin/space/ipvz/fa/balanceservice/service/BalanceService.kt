@@ -7,4 +7,5 @@ import reactor.core.publisher.Mono
 interface BalanceService {
     fun getGroupBalance(groupId: Long, currency: Currency? = null): Mono<Balance>
     fun getAccountBalance(groupId: Long, accountId: Long, currency: Currency? = null): Mono<Balance>
+    fun delete(groupId: Long, entityId: Long): Mono<Void>
 }

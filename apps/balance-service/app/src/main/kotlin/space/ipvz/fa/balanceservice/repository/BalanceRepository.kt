@@ -8,4 +8,5 @@ import reactor.core.publisher.Mono
 @Repository
 interface BalanceRepository : R2dbcRepository<BalanceEntity, Long> {
     fun findByGroupIdAndEntityId(groupId: Long, entityId: Long): Mono<BalanceEntity>
+    fun deleteByGroupIdAndEntityId(groupId: Long, entityId: Long): Mono<Void>
 }

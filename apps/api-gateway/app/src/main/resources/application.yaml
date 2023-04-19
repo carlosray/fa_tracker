@@ -111,6 +111,33 @@ spring:
             - StripPrefix=1
             - Auth
 
+        - id: account_create
+          uri: ${client.account-service.uri}
+          predicates:
+            - Path=/api/accounts/group/**
+            - Method=POST
+          filters:
+            - StripPrefix=1
+            - Auth
+
+        - id: account_update
+          uri: ${client.account-service.uri}
+          predicates:
+            - Path=/api/accounts/group/**
+            - Method=PUT
+          filters:
+            - StripPrefix=1
+            - Auth
+
+        - id: account_delete
+          uri: ${client.account-service.uri}
+          predicates:
+            - Path=/api/accounts/group/**
+            - Method=DELETE
+          filters:
+            - StripPrefix=1
+            - Auth
+
         #category
         - id: category_get
           uri: ${client.category-service.uri}

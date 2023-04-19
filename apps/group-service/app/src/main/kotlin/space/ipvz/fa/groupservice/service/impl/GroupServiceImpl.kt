@@ -14,6 +14,7 @@ import space.ipvz.fa.balanceservice.client.BalanceServiceClient
 import space.ipvz.fa.balanceservice.model.BalanceDto
 import space.ipvz.fa.cloud.model.Balance
 import space.ipvz.fa.groupservice.exception.GroupNotFoundException
+import space.ipvz.fa.groupservice.logging.LoggerDelegate
 import space.ipvz.fa.groupservice.model.GroupCreateDto
 import space.ipvz.fa.groupservice.model.GroupDto
 import space.ipvz.fa.groupservice.model.GroupUpdateDto
@@ -32,6 +33,7 @@ class GroupServiceImpl(
     private val groupRepository: GroupRepository,
     private val userServiceClient: UserServiceClient,
 ) : GroupService {
+    private val log by LoggerDelegate()
 
     override fun get(ids: Set<Long>): Flux<GroupDto> =
         groupRepository.findAllById(ids).flatMap(::withBalance)
@@ -72,11 +74,13 @@ class GroupServiceImpl(
             groupRepository.save(
                 it.copy(
                     name = it.name,
-                    description = it.description
+                    description = it.description,
+                    config = it.config.copy(currency = dto.currency)
                 )
             )
         }.flatMap(::withBalance)
 
     override fun delete(id: Long): Mono<Void> = groupRepository.deleteById(id)
-        .then(GroupDeletedEvent(id, Instant.now()).send())
+        .doOnNext { log.info("Deleted group $id") }
+        .then(GroupDeletedEvent(id).send())
 }

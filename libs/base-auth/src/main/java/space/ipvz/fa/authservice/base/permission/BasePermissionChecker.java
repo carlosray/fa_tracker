@@ -1,14 +1,13 @@
 package space.ipvz.fa.authservice.base.permission;
 
-import space.ipvz.fa.authservice.base.service.PermissionChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
-import org.springframework.security.core.context.SecurityContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import space.ipvz.fa.authservice.base.service.PermissionChecker;
+import space.ipvz.fa.authservice.base.util.SecurityContextUtils;
 
 public class BasePermissionChecker implements PermissionChecker {
     private static final Logger log = LoggerFactory.getLogger(BasePermissionChecker.class);
@@ -19,8 +18,7 @@ public class BasePermissionChecker implements PermissionChecker {
     }
 
     private Flux<Permission> getPermissions() {
-        return ReactiveSecurityContextHolder.getContext()
-                .mapNotNull(SecurityContext::getAuthentication)
+        return SecurityContextUtils.getAuthentication()
                 .flatMapMany(authentication -> Flux.fromIterable(authentication.getAuthorities()))
                 .mapNotNull(this::toPermission);
     }

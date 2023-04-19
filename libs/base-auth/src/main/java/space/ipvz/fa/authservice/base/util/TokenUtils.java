@@ -3,7 +3,6 @@ package space.ipvz.fa.authservice.base.util;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,8 +19,7 @@ public class TokenUtils {
     }
 
     public static Mono<String> authHeaderFromContextOrDefault() {
-        return ReactiveSecurityContextHolder.getContext()
-                .mapNotNull(c -> c.getAuthentication().getCredentials())
+        return SecurityContextUtils.getCredentials()
                 .flatMap(c -> toAuthHeader(Objects.toString(c)))
                 .defaultIfEmpty("null");
     }

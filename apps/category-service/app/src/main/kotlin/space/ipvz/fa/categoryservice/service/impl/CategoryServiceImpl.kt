@@ -7,6 +7,7 @@ import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.switchIfEmpty
 import space.ipvz.fa.async.service.EventService
 import space.ipvz.fa.categoryservice.exception.CategoryNotFoundException
+import space.ipvz.fa.categoryservice.logging.LoggerDelegate
 import space.ipvz.fa.categoryservice.model.CategoryDto
 import space.ipvz.fa.categoryservice.model.CreateCategoryDto
 import space.ipvz.fa.categoryservice.model.DefaultConfig
@@ -21,6 +22,7 @@ class CategoryServiceImpl(
     private val eventService: EventService,
     private val defaultConfig: DefaultConfig
 ) : CategoryService {
+    private val log by LoggerDelegate()
 
     @PostConstruct
     private fun postConstruct() {
@@ -61,4 +63,5 @@ class CategoryServiceImpl(
             .switchIfEmpty { Mono.error { CategoryNotFoundException(category.id) } }
 
     override fun delete(id: Long): Mono<Void> = categoryRepository.deleteById(id)
+        .doOnNext { log.info("Deleted category $id") }
 }

@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan
 import org.springframework.context.annotation.ComponentScan.Filter
 import org.springframework.context.annotation.FilterType
 import org.springframework.context.annotation.Import
+import space.ipvz.fa.async.config.KafkaConfiguration
 
 @SpringBootApplication
 @ComponentScan(
@@ -16,7 +17,7 @@ import org.springframework.context.annotation.Import
         Filter(type = FilterType.ASSIGNABLE_TYPE, classes = [BalanceClientConfiguration::class])
     ]
 )
-@Import(LoggingWebFilter::class, BaseApiExceptionHandler::class)
+@Import(LoggingWebFilter::class, BaseApiExceptionHandler::class, KafkaConfiguration::class)
 class BalanceServiceApplication
 
 fun main(args: Array<String>) {

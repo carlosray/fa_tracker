@@ -1,6 +1,5 @@
 package space.ipvz.fa.async.service
 
-import space.ipvz.fa.async.logging.LoggerDelegate
 import space.ipvz.fa.async.model.EventEntity
 import org.apache.kafka.clients.producer.ProducerRecord
 import reactor.core.publisher.Flux
@@ -11,6 +10,7 @@ import reactor.kafka.receiver.ReceiverRecord
 import reactor.kafka.sender.KafkaSender
 import reactor.kafka.sender.SenderRecord
 import reactor.kafka.sender.SenderResult
+import space.ipvz.fa.async.logging.LoggerDelegate
 
 class EventServiceImpl(
     private val kafkaSender: KafkaSender<String, EventEntity>,
