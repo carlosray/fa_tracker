@@ -3,4 +3,4 @@ name: api-gateway
 description: A Helm chart for Tracker Api Gateway
 type: application
 version: 1.0.0
-appVersion: "f99e4cbca03a64d02b9f76156164b41dbed57fcf"
+appVersion: "5d403fdaca26f52cd1d882ccd4b8782a175a04a8"
