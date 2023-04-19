@@ -8,6 +8,8 @@ spring:
     user: sa
     password:
     enabled: true
+  kafka:
+    server: localhost:9092
 
 token:
   internal-key: hSdgj/cERvlO/g==

@@ -2,9 +2,10 @@ package space.ipvz.fa.groupservice.model
 
 import space.ipvz.fa.cloud.model.Currency
 
-data class GroupCreateDto(
+data class GroupUpdateDto(
+    val id: Long,
     val name: String,
     val description: String,
     val currency: Currency,
-    val createDefaultCategories: Boolean = true
+    val users: List<String>,
 )

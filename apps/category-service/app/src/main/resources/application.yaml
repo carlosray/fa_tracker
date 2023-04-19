@@ -38,3 +38,16 @@ management:
 
 server:
   port: 8003
+
+default:
+  categories:
+    - name: Food
+      type: EXPENSE
+    - name: Restaurant
+      type: EXPENSE
+    - name: House
+      type: EXPENSE
+    - name: Salary
+      type: INCOME
+    - name: Investment
+      type: INCOME

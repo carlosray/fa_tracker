@@ -1,10 +1,11 @@
 package space.ipvz.fa.async.service
 
+import reactor.core.publisher.Mono
 import space.ipvz.fa.async.model.Event
+import space.ipvz.fa.async.model.event.GroupCreatedEvent
 import space.ipvz.fa.async.model.event.GroupDeletedEvent
 import space.ipvz.fa.async.model.event.PermissionUpdatedEvent
 import space.ipvz.fa.async.util.ContextUtils
-import reactor.core.publisher.Mono
 
 interface EventService {
     val group: Group
@@ -14,6 +15,7 @@ interface EventService {
 
     interface Group {
         val deleted: Event<GroupDeletedEvent>
+        val created: Event<GroupCreatedEvent>
     }
 
     interface User {
@@ -27,4 +29,5 @@ interface EventService {
 private val eventService: Lazy<EventService> = lazy { ContextUtils.getBean(EventService::class.java) }
 
 fun GroupDeletedEvent.send(): Mono<Void> = eventService.value.group.deleted.send(this)
+fun GroupCreatedEvent.send(): Mono<Void> = eventService.value.group.created.send(this)
 fun PermissionUpdatedEvent.send(): Mono<Void> = eventService.value.user.permissionUpdated.send(this)

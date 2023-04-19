@@ -61,6 +61,8 @@ config:
         uri: http://group-service:80
       account-service:
         uri: http://account-service:80
+      category-service:
+        uri: http://category-service:80
     logging:
       level:
         space.ipvz.fa.exchange.logging: DEBUG

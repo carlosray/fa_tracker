@@ -83,6 +83,15 @@ spring:
             - StripPrefix=1
             - Auth
 
+        - id: groups_update
+          uri: ${client.group-service.uri}
+          predicates:
+            - Path=/api/groups
+            - Method=PUT
+          filters:
+            - StripPrefix=1
+            - Auth
+
         - id: groups_delete
           uri: ${client.group-service.uri}
           predicates:
@@ -102,6 +111,43 @@ spring:
             - StripPrefix=1
             - Auth
 
+        #category
+        - id: category_get
+          uri: ${client.category-service.uri}
+          predicates:
+            - Path=/api/categories/group/**
+            - Method=GET
+          filters:
+            - StripPrefix=1
+            - Auth
+
+        - id: category_create
+          uri: ${client.category-service.uri}
+          predicates:
+            - Path=/api/categories/group/**
+            - Method=POST
+          filters:
+            - StripPrefix=1
+            - Auth
+
+        - id: category_update
+          uri: ${client.category-service.uri}
+          predicates:
+            - Path=/api/categories/group/**
+            - Method=PUT
+          filters:
+            - StripPrefix=1
+            - Auth
+
+        - id: category_delete
+          uri: ${client.category-service.uri}
+          predicates:
+            - Path=/api/categories/group/**
+            - Method=DELETE
+          filters:
+            - StripPrefix=1
+            - Auth
+
 client:
   auth-service:
     uri: http://localhost
@@ -112,6 +158,8 @@ client:
   group-service:
     uri: http://localhost
   account-service:
+    uri: http://localhost
+  category-service:
     uri: http://localhost
 
 management:

@@ -1,15 +1,17 @@
 package space.ipvz.fa.async.service
 
-import space.ipvz.fa.async.model.Event
-import space.ipvz.fa.async.model.EventEntity
-import space.ipvz.fa.async.model.event.GroupDeletedEvent
-import space.ipvz.fa.async.model.event.PermissionUpdatedEvent
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import space.ipvz.fa.async.model.Event
+import space.ipvz.fa.async.model.EventEntity
+import space.ipvz.fa.async.model.event.GroupCreatedEvent
+import space.ipvz.fa.async.model.event.GroupDeletedEvent
+import space.ipvz.fa.async.model.event.PermissionUpdatedEvent
 
 abstract class AbstractEventService : EventService {
     override val group = object : EventService.Group {
         override val deleted = buildEvent<GroupDeletedEvent>()
+        override val created = buildEvent<GroupCreatedEvent>()
     }
     override val user = object : EventService.User {
         override val permissionUpdated = buildEvent<PermissionUpdatedEvent>()

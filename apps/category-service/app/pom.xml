@@ -30,6 +30,11 @@
             <artifactId>exchange-logging</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>space.ipvz.fa</groupId>
+            <artifactId>base-async</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
         <dependency>
             <groupId>space.ipvz.fa</groupId>
@@ -93,7 +98,6 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>r2dbc-postgresql</artifactId>
-            <scope>runtime</scope>
         </dependency>
 
         <dependency>
