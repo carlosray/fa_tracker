@@ -29,7 +29,7 @@ class SecurityConfig(
             .pathMatchers("/actuator/health/**").permitAll() //health
             .pathMatchers(HttpMethod.POST, "/users/login").permitAll() //login
             .pathMatchers(HttpMethod.POST, "/users").permitAll() //register
-            .pathMatchers(HttpMethod.GET, "/users/permissions/*").permitAll() //permissions
+            .pathMatchers("/private/**").permitAll() //private api
             .anyExchange().authenticated()
 
             .and()

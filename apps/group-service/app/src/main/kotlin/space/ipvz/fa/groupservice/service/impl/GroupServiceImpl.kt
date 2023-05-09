@@ -6,6 +6,7 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.switchIfEmpty
 import space.ipvz.fa.async.model.event.GroupCreatedEvent
+import space.ipvz.fa.async.model.event.GroupCurrencyChangedEvent
 import space.ipvz.fa.async.model.event.GroupDeletedEvent
 import space.ipvz.fa.async.service.send
 import space.ipvz.fa.authservice.base.model.User
@@ -37,6 +38,13 @@ class GroupServiceImpl(
 
     override fun get(ids: Set<Long>): Flux<GroupDto> =
         groupRepository.findAllById(ids).flatMap(::withBalance)
+
+    override fun getAll(ids: Set<Long>?, withBalance: Boolean): Flux<GroupDto> =
+        (if (ids == null) groupRepository.findAll() else groupRepository.findAllById(ids))
+            .flatMap {
+                if (withBalance) withBalance(it)
+                else Mono.just(GroupDto(it.id!!, it.name, it.description, Balance.empty(it.config.currency)))
+            }
 
     private fun withBalance(entity: GroupEntity): Mono<GroupDto> =
         balanceServiceClient.getGroupBalance(entity.id!!, entity.config.currency)
@@ -70,15 +78,21 @@ class GroupServiceImpl(
 
     override fun update(dto: GroupUpdateDto): Mono<GroupDto> = groupRepository.findById(dto.id)
         .switchIfEmpty { Mono.error { GroupNotFoundException(dto.id) } }
-        .flatMap {
+        .flatMap { entity ->
             groupRepository.save(
-                it.copy(
-                    name = it.name,
-                    description = it.description,
-                    config = it.config.copy(currency = dto.currency)
+                entity.copy(
+                    name = dto.name,
+                    description = dto.description,
+                    config = entity.config.copy(currency = dto.currency)
                 )
-            )
-        }.flatMap(::withBalance)
+            ).flatMap {
+                val result = Mono.just(it)
+                if (entity.config.currency != dto.currency)
+                    GroupCurrencyChangedEvent(entity.id!!, dto.currency).send().then(result)
+                else result
+            }
+        }
+        .flatMap(::withBalance)
 
     override fun delete(id: Long): Mono<Void> = groupRepository.deleteById(id)
         .doOnNext { log.info("Deleted group $id") }

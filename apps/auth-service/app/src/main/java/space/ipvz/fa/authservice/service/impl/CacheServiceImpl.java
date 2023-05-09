@@ -24,7 +24,7 @@ public class CacheServiceImpl implements CacheService {
         this.eventService = eventService;
         this.userPermissionsCache = CachingUtils.ofMono(
                 config.getValidDuration(),
-                id -> userServiceClient.getPermissions(id).collectList()
+                id -> userServiceClient.getPermissionsPrivate(id).collectList()
         );
     }
 
@@ -33,7 +33,7 @@ public class CacheServiceImpl implements CacheService {
     private void postConstruct() {
         //on permissions update
         eventService.getUser().getPermissionUpdated().receive()
-                .flatMap(event -> userServiceClient.getPermissions(event.getUserId()).collectList()
+                .flatMap(event -> userServiceClient.getPermissionsPrivate(event.getUserId()).collectList()
                         .doOnNext(p -> userPermissionsCache.update(event.getUserId(), p)))
                 .subscribe();
     }

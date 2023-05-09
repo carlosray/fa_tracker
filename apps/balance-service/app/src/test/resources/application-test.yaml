@@ -13,3 +13,11 @@ spring:
 
 token:
   internal-key: pK668iFCbTQEdw==
+
+client:
+  account-service:
+    uri: http://localhost:8007
+  operation-service:
+    uri: http://localhost:8005
+  group-service:
+    uri: http://localhost:8004

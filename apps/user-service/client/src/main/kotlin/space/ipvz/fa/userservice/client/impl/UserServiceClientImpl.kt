@@ -1,11 +1,5 @@
 package space.ipvz.fa.userservice.client.impl
 
-import space.ipvz.fa.authservice.base.permission.Permission
-import space.ipvz.fa.authservice.base.util.TokenUtils
-import space.ipvz.fa.userservice.client.UserServiceClient
-import space.ipvz.fa.userservice.model.LoginDto
-import space.ipvz.fa.userservice.model.UpdatePermissionsDto
-import space.ipvz.fa.userservice.model.UserDto
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.MediaType
@@ -13,6 +7,12 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import space.ipvz.fa.authservice.base.permission.Permission
+import space.ipvz.fa.authservice.base.util.TokenUtils
+import space.ipvz.fa.userservice.client.UserServiceClient
+import space.ipvz.fa.userservice.model.LoginDto
+import space.ipvz.fa.userservice.model.UpdatePermissionsDto
+import space.ipvz.fa.userservice.model.UserDto
 import java.time.Duration
 
 class UserServiceClientImpl(
@@ -54,14 +54,11 @@ class UserServiceClientImpl(
                 .timeout(defaultTimeout)
         }
 
-    override fun getPermissions(userId: Long): Flux<Permission> =
-        TokenUtils.withAuthContextFlux { auth ->
-            userServiceClient.get()
-                .uri("/users/permissions/$userId")
-                .header(HttpHeaders.AUTHORIZATION, auth)
-                .retrieve()
-                .onStatus(HttpStatusCode::isError) { response -> response.createError() }
-                .bodyToFlux(Permission::class.java)
-                .timeout(defaultTimeout)
-        }
+    override fun getPermissionsPrivate(userId: Long): Flux<Permission> =
+        userServiceClient.get()
+            .uri("/private/users/permissions/$userId")
+            .retrieve()
+            .onStatus(HttpStatusCode::isError) { response -> response.createError() }
+            .bodyToFlux(Permission::class.java)
+            .timeout(defaultTimeout)
 }

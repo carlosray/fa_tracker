@@ -13,6 +13,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>space.ipvz.fa</groupId>
+            <artifactId>operation-service-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webflux</artifactId>
         </dependency>

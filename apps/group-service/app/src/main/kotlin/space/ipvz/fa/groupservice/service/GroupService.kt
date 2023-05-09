@@ -9,6 +9,7 @@ import space.ipvz.fa.groupservice.model.GroupUpdateDto
 
 interface GroupService {
     fun get(ids: Set<Long>): Flux<GroupDto>
+    fun getAll(ids: Set<Long>?, withBalance: Boolean): Flux<GroupDto>
     fun create(dto: GroupCreateDto, owner: User): Mono<GroupDto>
     fun update(dto: GroupUpdateDto): Mono<GroupDto>
     fun delete(id: Long): Mono<Void>

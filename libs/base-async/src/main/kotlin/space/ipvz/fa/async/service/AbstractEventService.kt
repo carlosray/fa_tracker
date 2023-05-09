@@ -4,23 +4,32 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import space.ipvz.fa.async.model.Event
 import space.ipvz.fa.async.model.EventEntity
+import space.ipvz.fa.async.model.event.AccountCreatedEvent
 import space.ipvz.fa.async.model.event.AccountDeletedEvent
 import space.ipvz.fa.async.model.event.GroupCreatedEvent
+import space.ipvz.fa.async.model.event.GroupCurrencyChangedEvent
 import space.ipvz.fa.async.model.event.GroupDeletedEvent
+import space.ipvz.fa.async.model.event.OperationCreatedEvent
 import space.ipvz.fa.async.model.event.PermissionUpdatedEvent
 
 abstract class AbstractEventService : EventService {
     override val group = object : EventService.Group {
         override val deleted = buildEvent<GroupDeletedEvent>()
         override val created = buildEvent<GroupCreatedEvent>()
+        override val currencyChanged = buildEvent<GroupCurrencyChangedEvent>()
     }
     override val user = object : EventService.User {
         override val permissionUpdated = buildEvent<PermissionUpdatedEvent>()
     }
     override val account = object : EventService.Account {
+        override val created = buildEvent<AccountCreatedEvent>()
         override val deleted = buildEvent<AccountDeletedEvent>()
     }
     override val category = object : EventService.Category {}
+
+    override val operation: EventService.Operation = object : EventService.Operation {
+        override val created = buildEvent<OperationCreatedEvent>()
+    }
 
     private inline fun <reified E : EventEntity> buildEvent(inputTopic: String? = null): Event<E> {
         val className = E::class.simpleName

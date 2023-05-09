@@ -8,7 +8,7 @@ import space.ipvz.fa.accountservice.exception.AccountNotFoundException
 import space.ipvz.fa.accountservice.exception.InvalidGroupIdException
 import space.ipvz.fa.accountservice.logging.LoggerDelegate
 import space.ipvz.fa.accountservice.model.AccountDto
-import space.ipvz.fa.accountservice.model.CreateAccountDto
+import space.ipvz.fa.accountservice.model.UpdateAccountDto
 import space.ipvz.fa.accountservice.model.entity.AccountConfig
 import space.ipvz.fa.accountservice.model.entity.AccountEntity
 import space.ipvz.fa.accountservice.repository.AccountRepository
@@ -35,7 +35,12 @@ class AccountServiceImpl(
         accountRepository.findAllByGroupId(groupId)
             .flatMap(::withBalance)
 
-    override fun create(groupId: Long, account: CreateAccountDto): Mono<AccountDto> {
+    override fun getConfig(groupId: Long, accountId: Long): Mono<AccountConfig> =
+        accountRepository.findById(accountId)
+            .doOnNext { if (it.groupId != groupId) throw InvalidGroupIdException(groupId) }
+            .map { it.config }
+
+    override fun create(groupId: Long, account: UpdateAccountDto): Mono<AccountDto> {
         val entity = AccountEntity(
             name = account.name,
             groupId = groupId,
@@ -44,8 +49,9 @@ class AccountServiceImpl(
         return accountRepository.save(entity).flatMap(::withBalance)
     }
 
-    override fun update(account: AccountDto): Mono<AccountDto> = accountRepository.findById(account.id!!)
+    override fun update(account: UpdateAccountDto): Mono<AccountDto> = accountRepository.findById(account.id!!)
         .switchIfEmpty { Mono.error { AccountNotFoundException(account.id!!) } }
+        .map { it.copy(config = it.config.copy(currency = account.currency), name = account.name) }
         .flatMap(::withBalance)
 
     override fun delete(accountId: Long): Mono<Void> = accountRepository.findById(accountId)

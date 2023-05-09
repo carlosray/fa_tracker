@@ -21,3 +21,5 @@ client:
     uri: http://localhost:8007
   category-service:
     uri: http://localhost:8003
+  balance-service:
+    uri: http://localhost:8008

@@ -38,3 +38,15 @@ management:
 
 server:
   port: 8008
+
+update:
+  accounts:
+    delay: PT1H
+  groups:
+    delay: PT1M
+
+currency:
+  cache: PT1M
+  fixer:
+    uri: https://api.apilayer.com/fixer
+    apiKey: TODO

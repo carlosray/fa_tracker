@@ -27,6 +27,11 @@
             <version>1.0.0</version>
         </dependency>
         <dependency>
+            <groupId>space.ipvz.fa</groupId>
+            <artifactId>operation-service-core</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>

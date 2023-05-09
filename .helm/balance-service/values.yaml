@@ -36,6 +36,16 @@ config:
     spring:
       kafka:
         server: kafka-common-kafka-bootstrap.kafka:9092
+    client:
+      account-service:
+        uri: http://account-service:80
+      operation-service:
+        uri: http://operation-service:80
+      group-service:
+        uri: http://group-service:80
+    currency:
+      fixer:
+        apiKey: TODO
 
 secret:
   mountPath: /etc/secret

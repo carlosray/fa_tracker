@@ -12,5 +12,5 @@ interface UserServiceClient {
     fun login(loginDto: Mono<LoginDto>): Mono<UserDto>
     fun getUser(id: Long): Mono<UserDto>
     fun updatePermissions(updates: List<UpdatePermissionsDto>): Mono<ResponseEntity<Void>>
-    fun getPermissions(userId: Long): Flux<Permission>
+    fun getPermissionsPrivate(userId: Long): Flux<Permission>
 }

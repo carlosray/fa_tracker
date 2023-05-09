@@ -28,6 +28,7 @@ class SecurityConfig(
 
             .authorizeExchange()
             .pathMatchers("/actuator/health/**").permitAll() //health
+            .pathMatchers("/private/**").permitAll() //private api
             .anyExchange().authenticated()
 
             .and()

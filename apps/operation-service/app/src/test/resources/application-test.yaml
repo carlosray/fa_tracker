@@ -7,3 +7,7 @@ db:
 
 token:
   internal-key: SF6KEb2sEhCAyA==
+
+spring:
+  kafka:
+    server: localhost:9092

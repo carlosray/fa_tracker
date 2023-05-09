@@ -1,12 +1,13 @@
 package space.ipvz.fa.operationservice.config
 
-import space.ipvz.fa.authservice.base.config.BaseSecurityConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Import
+import org.springframework.http.HttpMethod
 import org.springframework.security.config.web.server.ServerHttpSecurity
 import org.springframework.security.web.server.SecurityWebFilterChain
 import org.springframework.security.web.server.context.ServerSecurityContextRepository
+import space.ipvz.fa.authservice.base.config.BaseSecurityConfig
 
 @Configuration
 @Import(BaseSecurityConfig::class)
@@ -26,6 +27,7 @@ class SecurityConfig(
 
             .authorizeExchange()
             .pathMatchers("/actuator/health/**").permitAll() //health
+            .pathMatchers( "/private/**").permitAll() //internal private api
             .anyExchange().authenticated()
 
             .and()

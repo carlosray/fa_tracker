@@ -175,6 +175,16 @@ spring:
             - StripPrefix=1
             - Auth
 
+        #balance
+        - id: group_balance
+          uri: ${client.balance-service.uri}
+          predicates:
+            - Path=/api/balance/group/**
+            - Method=DELETE
+          filters:
+            - StripPrefix=1
+            - Auth
+
 client:
   auth-service:
     uri: http://localhost
@@ -187,6 +197,8 @@ client:
   account-service:
     uri: http://localhost
   category-service:
+    uri: http://localhost
+  balance-service:
     uri: http://localhost
 
 management:

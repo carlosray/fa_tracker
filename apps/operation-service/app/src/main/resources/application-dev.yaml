@@ -15,3 +15,6 @@ logging:
     org:
       springframework:
         security: DEBUG
+spring:
+  kafka:
+    server: localhost:9092
