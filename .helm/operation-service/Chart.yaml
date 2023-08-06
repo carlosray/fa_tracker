@@ -3,4 +3,4 @@ name: operation-service
 description: A Helm chart for Tracker Operation Service
 type: application
 version: 1.0.0
-appVersion: "dacd4e76fcaedf335cb377939002fb90c04822ef"
+appVersion: "10943e24c35700c5495d1a45cef14cb228048ef7"
