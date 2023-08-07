@@ -3,6 +3,8 @@ package space.ipvz.fa.authservice.service.impl;
 import java.util.List;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 import space.ipvz.fa.async.service.EventService;
 import space.ipvz.fa.authservice.base.permission.Permission;
 import space.ipvz.fa.authservice.model.config.TokenConfig;
@@ -10,8 +12,6 @@ import space.ipvz.fa.authservice.service.CacheService;
 import space.ipvz.fa.caching.CacheMono;
 import space.ipvz.fa.caching.util.CachingUtils;
 import space.ipvz.fa.userservice.client.UserServiceClient;
-import org.springframework.stereotype.Service;
-import reactor.core.publisher.Mono;
 
 @Service
 public class CacheServiceImpl implements CacheService {
@@ -23,7 +23,7 @@ public class CacheServiceImpl implements CacheService {
         this.userServiceClient = userServiceClient;
         this.eventService = eventService;
         this.userPermissionsCache = CachingUtils.ofMono(
-                config.getValidDuration(),
+                config.getPermissionsCache(),
                 id -> userServiceClient.getPermissionsPrivate(id).collectList()
         );
     }

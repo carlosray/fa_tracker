@@ -1,5 +1,9 @@
 package space.ipvz.fa.userservice.service.impl;
 
+import org.springframework.stereotype.Service
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.toFlux
 import space.ipvz.fa.async.model.event.PermissionUpdatedEvent
 import space.ipvz.fa.async.service.send
 import space.ipvz.fa.authservice.base.exception.AccessForbiddenException
@@ -12,10 +16,6 @@ import space.ipvz.fa.userservice.model.UpdatePermissionsDto.Action.GRANT
 import space.ipvz.fa.userservice.model.entity.RoleEntity
 import space.ipvz.fa.userservice.repository.RoleRepository
 import space.ipvz.fa.userservice.service.PermissionService
-import org.springframework.stereotype.Service
-import reactor.core.publisher.Flux
-import reactor.core.publisher.Mono
-import reactor.kotlin.core.publisher.toFlux
 
 @Service
 class PermissionServiceImpl(
@@ -49,6 +49,9 @@ class PermissionServiceImpl(
             .flatMap { Mono.error { AccessForbiddenException(it) } }
 
     override fun deleteByGroupId(groupId: Long): Mono<Void> =
-        roleRepository.deleteAllByPermissionStartsWith("${groupId}.")
-            .doOnNext { log.info("Deleted all permissions of group $groupId") }
+        roleRepository.findAllByPermissionStartsWith("${groupId}.")
+            .doOnNext { log.info("Deleted permission ${it.permission} of user ${it.userId}") }
+            .flatMap { role -> roleRepository.deleteById(role.id!!)
+                .then(PermissionUpdatedEvent(role.permission, false, role.userId).send()) }
+            .then()
 }

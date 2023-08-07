@@ -12,6 +12,7 @@ public class TokenConfig {
     Duration validDuration;
     Duration refreshDuration;
     Integer refreshLength;
+    Duration permissionsCache;
 
     public byte[] getKey(AccessTokenType type) {
         String key = switch (type) {

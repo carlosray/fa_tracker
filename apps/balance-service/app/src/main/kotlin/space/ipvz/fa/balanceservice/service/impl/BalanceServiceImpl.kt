@@ -97,9 +97,9 @@ class BalanceServiceImpl(
             .then(balanceRepository.findAllByGroupIdIn(ids)
                 .collectList()
                 .flatMapMany { all ->
-                    val groupEntities = all.filter { it.entityId in ids }.associateBy { it.groupId }
+                    val groupEntities = all.filter { it.groupId == it.entityId && it.groupId in ids }.associateBy { it.groupId }
                     Flux.concat(all
-                        .filter { it.entityId !in ids }
+                        .filter { it.groupId in groupEntities && it.groupId != it.entityId }
                         .groupBy { it.groupId }
                         .mapValues { (gId, entities) ->
                             val groupCurrency = groupEntities[gId]!!.currency

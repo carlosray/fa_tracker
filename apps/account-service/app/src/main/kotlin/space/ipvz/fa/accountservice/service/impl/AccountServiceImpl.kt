@@ -51,7 +51,7 @@ class AccountServiceImpl(
 
     override fun update(account: UpdateAccountDto): Mono<AccountDto> = accountRepository.findById(account.id!!)
         .switchIfEmpty { Mono.error { AccountNotFoundException(account.id!!) } }
-        .map { it.copy(config = it.config.copy(currency = account.currency), name = account.name) }
+        .flatMap { accountRepository.save(it.copy(config = it.config.copy(currency = account.currency), name = account.name)) }
         .flatMap(::withBalance)
 
     override fun delete(accountId: Long): Mono<Void> = accountRepository.findById(accountId)

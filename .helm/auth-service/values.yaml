@@ -35,7 +35,8 @@ config:
       external-key: <FILL>
       internal-key: <FILL>
       valid-duration: PT10M
-      refresh-duration: PT30M
+      permissions-cache: PT10S
+      refresh-duration: PT20M
       refresh-length: 50
     client:
       user-service:
