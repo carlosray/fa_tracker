@@ -3,4 +3,4 @@ name: user-service
 description: A Helm chart for Tracker User Service
 type: application
 version: 1.0.0
-appVersion: "724d70baa51e2386a4679ff536f4a9d77679de81"
+appVersion: "b7297eb6d37e92b51a467318a760b96dcef516f9"
