@@ -20,13 +20,13 @@ Simple graphs and financial overviews provide actionable insights into the state
 #### [libs](../libs) All the common libraries.
 
 ## Services
-| Service                                        | Dev Port |
-|------------------------------------------------|----------|
-| [Api Gateway](../apps/api-gateway)             | 8001     |
-| [Auth Service](../apps/auth-service)           | 8002     |
-| [Category Service](../apps/category-service)   | 8003     |
-| [Group Service](../apps/group-service)         | 8004     |
-| [Operation Service](../apps/operation-service) | 8005     |
-| [User Service](../apps/user-service)           | 8006     |
-| [Account Service](../apps/account-service)     | 8007     |
-| [Balance Service](../apps/balance-service)     | 8008     |
+| Service                                        | Dev Port | CI |
+|------------------------------------------------|----------|-------|
+| [Api Gateway](../apps/api-gateway)             | 8001     |![api-gateway-ci](https://github.com/carlosray/fa_tracker/actions/workflows/app-api-gateway.yaml/badge.svg)
+| [Auth Service](../apps/auth-service)           | 8002     |![auth-service-ci](https://github.com/carlosray/fa_tracker/actions/workflows/app-auth-service.yaml/badge.svg)
+| [Category Service](../apps/category-service)   | 8003     |![category-service-ci](https://github.com/carlosray/fa_tracker/actions/workflows/app-category-service.yaml/badge.svg)
+| [Group Service](../apps/group-service)         | 8004     |![group-service-ci](https://github.com/carlosray/fa_tracker/actions/workflows/app-group-service.yaml/badge.svg)
+| [Operation Service](../apps/operation-service) | 8005     |![operation-service-ci](https://github.com/carlosray/fa_tracker/actions/workflows/app-operation-service.yaml/badge.svg)
+| [User Service](../apps/user-service)           | 8006     |![user-service-ci](https://github.com/carlosray/fa_tracker/actions/workflows/app-user-service.yaml/badge.svg)
+| [Account Service](../apps/account-service)     | 8007     |![account-service-ci](https://github.com/carlosray/fa_tracker/actions/workflows/app-account-service.yaml/badge.svg)
+| [Balance Service](../apps/balance-service)     | 8008     |![balance-service-ci](https://github.com/carlosray/fa_tracker/actions/workflows/app-balance-service.yaml/badge.svg)
